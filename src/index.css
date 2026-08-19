@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, Cambria, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-script: "Alex Brush", cursive;
+  --color-benin-royal: #002B66;
+  --color-benin-royal-dark: #001C47;
+  --color-benin-ochre: #D97706;
+  --color-benin-terracotta: #C2410C;
+  --color-benin-earth: #881337;
+  --color-benin-emerald: #047857;
+  --color-benin-cream: #FAF7F2;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-benin-cream);
+  color: #0f172a;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========================================================= */
+/* MODE NUIT ROYAL (ROYAL NIGHT 🌙) - CONTRASTE & LISIBILITÉ */
+/* ========================================================= */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #0B132B !important;
+  color: #f8fafc !important;
+}
+
+html.dark #root,
+html.dark main {
+  background-color: transparent !important;
+  color: #f8fafc !important;
+}
+
+/* 1. ESPACES ET CONTENEURS TRANSPARENTS POUR VOIR L'IMAGE D'ARRIÈRE-PLAN */
+html.dark .bg-\[\#FAF7F2\],
+html.dark .bg-slate-100,
+html.dark .bg-slate-50 {
+  background-color: transparent !important;
+}
+
+/* 2. FONDS DES BLOCS ET CARTES (#16223f ET #1e293b AVEC GLASSMORPHISME) */
+html.dark .bg-white {
+  background-color: rgba(22, 34, 63, 0.88) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+html.dark .bg-white\/85,
+html.dark .bg-white\/90,
+html.dark .bg-white\/95,
+html.dark .bg-white\/80 {
+  background-color: rgba(22, 34, 63, 0.82) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+html.dark .bg-emerald-50,
+html.dark .bg-amber-50,
+html.dark .bg-blue-50,
+html.dark [class*="bg-[#003580]"] {
+  background-color: rgba(30, 41, 59, 0.85) !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 3. LISIBILITÉ TOTALE DU TEXTE (PAS DE TEXTE BLANC SUR FOND CLAIR) */
+html.dark .text-slate-900,
+html.dark .text-slate-950,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark [class*="text-[#003580]"],
+html.dark .text-amber-900,
+html.dark .text-amber-800,
+html.dark .text-emerald-900,
+html.dark .text-emerald-800 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-slate-500 {
+  color: #cbd5e1 !important;
+}
+
+html.dark p, 
+html.dark span, 
+html.dark h1, 
+html.dark h2, 
+html.dark h3, 
+html.dark h4, 
+html.dark li {
+  color: #f8fafc;
+}
+
+/* 4. BOUTONS SECONDAIRES & BOUTONS D'ACTION */
+html.dark [class*="bg-[#003580]"],
+html.dark [class*="bg-[#00255c]"],
+html.dark [class*="bg-[#006ce4]"] {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark button.bg-white,
+html.dark .bg-slate-200 {
+  background-color: #16223f !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+/* 5. CHAMPS DE SAISIE ET FORMULAIRES (INPUTS, TEXTAREA, SELECT) */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #16223f !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* 6. BORDURES NETTES */
+html.dark .border-slate-200,
+html.dark .border-slate-200\/90,
+html.dark .border-slate-200\/80,
+html.dark .border-slate-200\/60,
+html.dark .border-slate-100,
+html.dark .border-slate-300,
+html.dark .border-emerald-200,
+html.dark .border-amber-200 {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Custom subtle Beninese geometric motif pattern overlay */
+.bg-benin-motif {
+  background-image: radial-gradient(rgba(0, 43, 102, 0.04) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.bg-benin-hero-gradient {
+  background: linear-gradient(135deg, #001C47 0%, #002B66 50%, #1E3A8A 100%);
+}

@@ -1,0 +1,30 @@
+{
+  "short_name": "AfroKu",
+  "name": "AfroKu.com - Immersion & Voyage au Bénin",
+  "description": "Plateforme de réservations, d'immersion culturelle, de guides et d'artisans au Bénin.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#003580",
+  "theme_color": "#003580",
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["travel", "lifestyle", "shopping"]
+}
