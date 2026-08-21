@@ -243,6 +243,245 @@ app.post("/api/auth/login", async (req, res) => {
     res.status(500).json({ error: "Erreur serveur lors de la connexion." });
   }
 });
+cat << 'DELIM'
+// ----------------------------------------------------------------------
+// POST /api/auth/forgot-password — Étape 1 : demande d'un code OTP par e-mail
+// ----------------------------------------------------------------------
+app.post("/api/auth/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body || {};
+    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    if (!cleanEmail) {
+      return res.status(400).json({ error: "Veuillez saisir une adresse e-mail." });
+    }
+
+    const db = await getDb();
+    const users = db.collection("users");
+    const user = await users.findOne({ email: cleanEmail });
+    if (!user) {
+      return res.status(404).json({ error: "Aucun compte AfroKu n'est enregistré avec cette adresse e-mail." });
+    }
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const codeHash = await bcrypt.hash(code, 10);
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    const otps = db.collection("otps");
+    await otps.updateOne(
+      { email: cleanEmail },
+      { $set: { email: cleanEmail, codeHash, expiresAt, verified: false, createdAt: new Date() } },
+      { upsert: true }
+    );
+
+    await sendOtpEmail(cleanEmail, code);
+
+    res.status(200).json({ success: true, message: "Un code de vérification a été envoyé par e-mail." });
+  } catch (err: any) {
+    console.error("Erreur /api/auth/forgot-password:", err);
+    res.status(500).json({ error: "Erreur serveur lors de l'envoi du code." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// POST /api/auth/verify-otp — Étape 2 : vérification du code reçu
+// ----------------------------------------------------------------------
+app.post("/api/auth/verify-otp", async (req, res) => {
+  try {
+    const { email, code } = req.body || {};
+    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    if (!cleanEmail || !code) {
+      return res.status(400).json({ error: "Veuillez saisir le code reçu." });
+    }
+
+    const db = await getDb();
+    const otps = db.collection("otps");
+    const otpRecord = await otps.findOne({ email: cleanEmail });
+
+    if (!otpRecord || new Date() > new Date(otpRecord.expiresAt)) {
+      return res.status(400).json({ error: "Code expiré. Veuillez en demander un nouveau." });
+    }
+
+    const codeMatches = await bcrypt.compare(code, otpRecord.codeHash);
+    if (!codeMatches) {
+      return res.status(400).json({ error: "Code de vérification incorrect." });
+    }
+
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET est manquant côté serveur.");
+    }
+    const resetToken = jwt.sign(
+      { email: cleanEmail, purpose: "password_reset" },
+      JWT_SECRET,
+      { expiresIn: "10m" }
+    );
+
+    res.status(200).json({ success: true, resetToken });
+  } catch (err: any) {
+    console.error("Erreur /api/auth/verify-otp:", err);
+    res.status(500).json({ error: "Erreur serveur lors de la vérification." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// POST /api/auth/reset-password — Étape 3 : définir le nouveau mot de passe
+// ----------------------------------------------------------------------
+app.post("/api/auth/reset-password", async (req, res) => {
+  try {
+    const { resetToken, newPassword } = req.body || {};
+    if (!resetToken || !newPassword || newPassword.length < 6) {
+      return res.status(400).json({ error: "Le mot de passe doit comporter au moins 6 caractères." });
+    }
+
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET est manquant côté serveur.");
+    }
+
+    let payload: any;
+    try {
+      payload = jwt.verify(resetToken, JWT_SECRET);
+    } catch {
+      return res.status(401).json({ error: "Session expirée. Veuillez recommencer la procédure." });
+    }
+    if (!payload || payload.purpose !== "password_reset") {
+      return res.status(401).json({ error: "Jeton invalide." });
+    }
+
+    const db = await getDb();
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    await db.collection("users").updateOne(
+      { email: payload.email },
+      { $set: { passwordHash } }
+    );
+
+    await db.collection("otps").deleteOne({ email: payload.email });
+
+    res.status(200).json({ success: true, message: "Mot de passe réinitialisé avec succès." });
+  } catch (err: any) {
+    console.error("Erreur /api/auth/reset-password:", err);
+    res.status(500).json({ error: "Erreur serveur lors de la réinitialisation." });
+  }
+});
+DELIM
+Sortie
+
+// ----------------------------------------------------------------------
+// POST /api/auth/forgot-password — Étape 1 : demande d'un code OTP par e-mail
+// ----------------------------------------------------------------------
+app.post("/api/auth/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body || {};
+    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    if (!cleanEmail) {
+      return res.status(400).json({ error: "Veuillez saisir une adresse e-mail." });
+    }
+
+    const db = await getDb();
+    const users = db.collection("users");
+    const user = await users.findOne({ email: cleanEmail });
+    if (!user) {
+      return res.status(404).json({ error: "Aucun compte AfroKu n'est enregistré avec cette adresse e-mail." });
+    }
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const codeHash = await bcrypt.hash(code, 10);
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    const otps = db.collection("otps");
+    await otps.updateOne(
+      { email: cleanEmail },
+      { $set: { email: cleanEmail, codeHash, expiresAt, verified: false, createdAt: new Date() } },
+      { upsert: true }
+    );
+
+    await sendOtpEmail(cleanEmail, code);
+
+    res.status(200).json({ success: true, message: "Un code de vérification a été envoyé par e-mail." });
+  } catch (err: any) {
+    console.error("Erreur /api/auth/forgot-password:", err);
+    res.status(500).json({ error: "Erreur serveur lors de l'envoi du code." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// POST /api/auth/verify-otp — Étape 2 : vérification du code reçu
+// ----------------------------------------------------------------------
+app.post("/api/auth/verify-otp", async (req, res) => {
+  try {
+    const { email, code } = req.body || {};
+    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    if (!cleanEmail || !code) {
+      return res.status(400).json({ error: "Veuillez saisir le code reçu." });
+    }
+
+    const db = await getDb();
+    const otps = db.collection("otps");
+    const otpRecord = await otps.findOne({ email: cleanEmail });
+
+    if (!otpRecord || new Date() > new Date(otpRecord.expiresAt)) {
+      return res.status(400).json({ error: "Code expiré. Veuillez en demander un nouveau." });
+    }
+
+    const codeMatches = await bcrypt.compare(code, otpRecord.codeHash);
+    if (!codeMatches) {
+      return res.status(400).json({ error: "Code de vérification incorrect." });
+    }
+
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET est manquant côté serveur.");
+    }
+    const resetToken = jwt.sign(
+      { email: cleanEmail, purpose: "password_reset" },
+      JWT_SECRET,
+      { expiresIn: "10m" }
+    );
+
+    res.status(200).json({ success: true, resetToken });
+  } catch (err: any) {
+    console.error("Erreur /api/auth/verify-otp:", err);
+    res.status(500).json({ error: "Erreur serveur lors de la vérification." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// POST /api/auth/reset-password — Étape 3 : définir le nouveau mot de passe
+// ----------------------------------------------------------------------
+app.post("/api/auth/reset-password", async (req, res) => {
+  try {
+    const { resetToken, newPassword } = req.body || {};
+    if (!resetToken || !newPassword || newPassword.length < 6) {
+      return res.status(400).json({ error: "Le mot de passe doit comporter au moins 6 caractères." });
+    }
+
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET est manquant côté serveur.");
+    }
+
+    let payload: any;
+    try {
+      payload = jwt.verify(resetToken, JWT_SECRET);
+    } catch {
+      return res.status(401).json({ error: "Session expirée. Veuillez recommencer la procédure." });
+    }
+    if (!payload || payload.purpose !== "password_reset") {
+      return res.status(401).json({ error: "Jeton invalide." });
+    }
+
+    const db = await getDb();
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    await db.collection("users").updateOne(
+      { email: payload.email },
+      { $set: { passwordHash } }
+    );
+
+    await db.collection("otps").deleteOne({ email: payload.email });
+
+    res.status(200).json({ success: true, message: "Mot de passe réinitialisé avec succès." });
+  } catch (err: any) {
+    console.error("Erreur /api/auth/reset-password:", err);
+    res.status(500).json({ error: "Erreur serveur lors de la réinitialisation." });
+  }
+});
+
 
 app.post("/api/ai/chat", apiRateLimiter, async (req, res) => {
   try {
