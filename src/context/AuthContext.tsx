@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { registerUser, loginUser } from '../services/authService';
 
 export interface User {
   id?: string;
@@ -35,6 +36,7 @@ const AuthContext = createContext<AuthContextType>({
   loading: false,
   login: async () => ({ success: false }),
   signup: async () => ({ success: false }),
+  setUserSession: () => {},
   logout: () => {},
 });
 
@@ -60,75 +62,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   /**
-   * INSCRIPTION FRONTEND (Prêt à être connecté au backend par votre développeur)
+   * INSCRIPTION — appelle le vrai backend (POST /api/auth/register).
+   * Le mot de passe est haché côté serveur, jamais stocké en clair.
    */
   const signup = async (
     name: string,
     email: string,
     password: string,
-    role: string = 'traveler',
+    role: string = 'tourist',
     phone: string = ''
   ): Promise<AuthResult> => {
-    if (!name || name.trim().length < 2) {
-      return { success: false, error: 'Le nom doit comporter au moins 2 caractères.' };
+    try {
+      const { token: realToken, user: realUser } = await registerUser(name, email, password, role, phone);
+
+      setUser(realUser);
+      setToken(realToken);
+      localStorage.setItem(USER_KEY, JSON.stringify(realUser));
+      localStorage.setItem(TOKEN_KEY, realToken);
+
+      return { success: true, user: realUser };
+    } catch (err: any) {
+      return { success: false, error: err.message || 'Erreur lors de la création du compte.' };
     }
-    if (!email || !email.includes('@')) {
-      return { success: false, error: 'Veuillez saisir une adresse e-mail valide.' };
-    }
-    if (!password || password.length < 6) {
-      return { success: false, error: 'Le mot de passe doit comporter au moins 6 caractères.' };
-    }
-
-    const newUser: User = {
-      id: `usr_${Date.now()}`,
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      role: (role as any) || 'traveler',
-      phone: phone.trim(),
-    };
-
-    const mockToken = `mock_jwt_token_${Date.now()}`;
-
-    // On stocke en local pour que la maquette frontend réagisse
-    setUser(newUser);
-    setToken(mockToken);
-    localStorage.setItem(USER_KEY, JSON.stringify(newUser));
-    localStorage.setItem(TOKEN_KEY, mockToken);
-
-    return { success: true, user: newUser };
   };
 
   /**
-   * CONNEXION FRONTEND (Prêt à être connecté au backend)
+   * CONNEXION — appelle le vrai backend (POST /api/auth/login).
    */
   const login = async (email: string, password: string): Promise<AuthResult> => {
-    if (!email || !password) {
-      return { success: false, error: 'Veuillez remplir tous les champs.' };
+    try {
+      const { token: realToken, user: realUser } = await loginUser(email, password);
+
+      setUser(realUser);
+      setToken(realToken);
+      localStorage.setItem(USER_KEY, JSON.stringify(realUser));
+      localStorage.setItem(TOKEN_KEY, realToken);
+
+      return { success: true, user: realUser };
+    } catch (err: any) {
+      return { success: false, error: err.message || 'Erreur lors de la connexion.' };
     }
-
-    // Récupère l'utilisateur stocké ou en crée un fictif pour la démo frontend
-    const savedUser = localStorage.getItem(USER_KEY);
-    let currentUser: User;
-
-    if (savedUser) {
-      currentUser = JSON.parse(savedUser);
-    } else {
-      currentUser = {
-        id: `usr_demo`,
-        name: email.split('@')[0],
-        email: email.trim().toLowerCase(),
-        role: 'traveler',
-      };
-    }
-
-    const mockToken = `mock_jwt_token_${Date.now()}`;
-
-    setUser(currentUser);
-    setToken(mockToken);
-    localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-    localStorage.setItem(TOKEN_KEY, mockToken);
-
-    return { success: true, user: currentUser };
   };
 
   const setUserSession = (newUser: User) => {
