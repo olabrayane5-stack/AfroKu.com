@@ -243,7 +243,7 @@ app.post("/api/auth/login", async (req, res) => {
     res.status(500).json({ error: "Erreur serveur lors de la connexion." });
   }
 });
-cat << 'DELIM'
+
 // ----------------------------------------------------------------------
 // POST /api/auth/forgot-password — Étape 1 : demande d'un code OTP par e-mail
 // ----------------------------------------------------------------------
@@ -361,8 +361,7 @@ app.post("/api/auth/reset-password", async (req, res) => {
     res.status(500).json({ error: "Erreur serveur lors de la réinitialisation." });
   }
 });
-DELIM
-Sortie
+
 
 // ----------------------------------------------------------------------
 // POST /api/auth/forgot-password — Étape 1 : demande d'un code OTP par e-mail
