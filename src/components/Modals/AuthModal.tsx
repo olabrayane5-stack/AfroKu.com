@@ -62,6 +62,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
       setSignupNotice('');
       setSuccess(false);
       setResetSuccess(false);
+      // Sécurité : on efface les identifiants à CHAQUE ouverture de la
+      // fenêtre — pas seulement à la déconnexion — pour ne jamais laisser
+      // un mot de passe précédemment saisi visible dans le formulaire.
+      setEmail('');
+      setPassword('');
+      setFullName('');
+      setNewPassword('');
 
       const prevBodyOverflow = document.body.style.overflow;
       const prevHtmlOverflow = document.documentElement.style.overflow;
@@ -340,10 +347,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
                     <input
                       type="password"
                       required
-                      minLength={4}
+                      minLength={6}
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Saisissez le nouveau mot de passe"
+                      autoComplete="new-password"
                       className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-[#003580]"
                     />
                   </div>
@@ -486,6 +494,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="jean.dupont@gmail.com"
+                  autoComplete={currentView === 'login' ? 'off' : 'email'}
                   className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-[#003580]"
                 />
               </div>
@@ -530,6 +539,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
+                  autoComplete="off"
                   className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-[#003580]"
                 />
               </div>
