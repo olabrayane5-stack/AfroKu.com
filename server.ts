@@ -170,6 +170,54 @@ app.post("/api/auth/register", async (req, res) => {
     res.status(500).json({ error: "Erreur serveur lors de l'inscription." });
   }
 });
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body || {};
+
+    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    if (!cleanEmail || !password) {
+      return res.status(400).json({ error: "Veuillez remplir tous les champs." });
+    }
+
+    const db = await getDb();
+    const users = db.collection("users");
+
+    const user = await users.findOne({ email: cleanEmail });
+
+    const genericError = "E-mail ou mot de passe incorrect.";
+    if (!user) {
+      return res.status(401).json({ error: genericError });
+    }
+
+    const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordMatches) {
+      return res.status(401).json({ error: genericError });
+    }
+
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET est manquant côté serveur.");
+    }
+    const token = jwt.sign(
+      { userId: user._id.toString(), email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.status(200).json({
+      token,
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        accreditationStatus: user.accreditationStatus,
+      },
+    });
+  } catch (err: any) {
+    console.error("Erreur /api/auth/login:", err);
+    res.status(500).json({ error: "Erreur serveur lors de la connexion." });
+  }
+});
 
 app.post("/api/ai/chat", apiRateLimiter, async (req, res) => {
   try {
