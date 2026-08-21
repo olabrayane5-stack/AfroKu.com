@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ModalType } from '../../types';
 import { X, Mail, Lock, User, CheckCircle, AlertCircle, KeyRound, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { requestPasswordReset, verifyOtpCode, confirmPasswordReset } from '../../services/authService';
 
 /**
  * ============================================================================
@@ -27,13 +28,14 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }) => {
-  const { login, signup, resetPassword } = useAuth();
+  const { login, signup } = useAuth();
   const [currentView, setCurrentView] = useState<'signup' | 'login' | 'forgot'>('login');
   
   // Forgot password OTP steps: 'email_input' -> 'code_input' -> 'new_password_input'
   const [forgotStep, setForgotStep] = useState<'email_input' | 'code_input' | 'new_password_input'>('email_input');
-  const [generatedOtp, setGeneratedOtp] = useState<string>('');
+  const [resetToken, setResetToken] = useState<string>('');
   const [enteredOtp, setEnteredOtp] = useState<string>('');
+  const [email, setEmail] = useState('');
 
   const [signupRole, setSignupRole] = useState<'tourist' | 'guide' | 'artisan'>('tourist');
   const [cniNumber, setCniNumber] = useState('');
@@ -54,7 +56,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
     if (type) {
       setCurrentView(type === 'auth_signup' ? 'signup' : 'login');
       setForgotStep('email_input');
-      setGeneratedOtp('');
+      setResetToken('');
       setEnteredOtp('');
       setErrorMsg('');
       setSignupNotice('');
@@ -75,50 +77,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
 
   if (!type) return null;
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
-    const cleanEmail = email.trim().toLowerCase();
-
-    // Check if account exists
     try {
-      const saved = localStorage.getItem('afroku_users_db');
-      const users = saved ? JSON.parse(saved) : [];
-      const exists = users.some((u: any) => u.email.toLowerCase() === cleanEmail);
-
-      if (!exists) {
-        setErrorMsg('Aucun compte AfroKu n\'est enregistré avec cette adresse e-mail.');
-        return;
-      }
-    } catch {
-      // ignore
+      await requestPasswordReset(email.trim().toLowerCase());
+      setForgotStep('code_input');
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Erreur lors de l\'envoi du code.');
     }
-
-    // Generate 6-digit OTP code
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(code);
-    setForgotStep('code_input');
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
-    if (enteredOtp.trim() !== generatedOtp) {
-      setErrorMsg('Code de vérification incorrect. Veuillez vérifier le code reçu.');
-      return;
+    try {
+      const { resetToken: token } = await verifyOtpCode(email.trim().toLowerCase(), enteredOtp.trim());
+      setResetToken(token);
+      setForgotStep('new_password_input');
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Code de vérification incorrect.');
     }
-    setForgotStep('new_password_input');
   };
 
-  const handleFinalResetPassword = (e: React.FormEvent) => {
+  const handleFinalResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
-    const res = resetPassword(email, newPassword);
-    if (!res.success) {
-      setErrorMsg(res.error || 'Erreur lors de la réinitialisation.');
-      return;
+    try {
+      await confirmPasswordReset(resetToken, newPassword);
+      setResetSuccess(true);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Erreur lors de la réinitialisation.');
     }
-    setResetSuccess(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -167,7 +157,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
   const handleSwitchView = (view: 'signup' | 'login' | 'forgot') => {
     setCurrentView(view);
     setForgotStep('email_input');
-    setGeneratedOtp('');
+    setResetToken('');
     setEnteredOtp('');
     setErrorMsg('');
     setSignupNotice('');
@@ -220,21 +210,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
           </div>
         )}
 
-        {/* SIMULATED EMAIL NOTIFICATION BANNER IF IN OTP STEP */}
+        {/* Bannière informative : le vrai code part par e-mail via Resend */}
         {currentView === 'forgot' && forgotStep === 'code_input' && (
-          <div className="mb-5 p-3.5 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 text-xs shadow-sm space-y-1.5 animate-pulse">
+          <div className="mb-5 p-3.5 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 text-xs shadow-sm space-y-1.5">
             <div className="flex items-center gap-2 font-bold text-amber-800">
               <Mail className="w-4 h-4 text-amber-600" />
-              <span>Simulateur d'E-mail AfroKu (afroku.officiel@gmail.com)</span>
+              <span>Vérifiez votre boîte e-mail</span>
             </div>
             <p className="text-[#333]">
-              Code d'activation sécurisé pour <strong className="text-slate-900">{email}</strong> :
-            </p>
-            <div className="text-center font-mono font-black text-lg tracking-widest text-[#003580] bg-white py-1.5 rounded-md border border-amber-200">
-              {generatedOtp}
-            </div>
-            <p className="text-[10px] text-slate-500 italic text-center">
-              (En production, ce code est expédié automatiquement via le serveur SMTP Google Workspace)
+              Un code à 6 chiffres a été envoyé à <strong className="text-slate-900">{email}</strong>. Pensez à vérifier vos courriers indésirables (spam).
             </p>
           </div>
         )}
@@ -600,5 +584,3 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
     </div>
   );
 };
-
-
