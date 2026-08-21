@@ -106,7 +106,7 @@ async function sendOtpEmail(toEmail: string, code: string) {
   if (!resendClient) {
     throw new Error("RESEND_API_KEY est manquant côté serveur.");
   }
-  await resendClient.emails.send({
+    const result = await resendClient.emails.send({
     from: "AfroKu <onboarding@resend.dev>",
     to: toEmail,
     subject: "Votre code de vérification AfroKu",
@@ -119,6 +119,13 @@ async function sendOtpEmail(toEmail: string, code: string) {
       </div>
     `,
   });
+  
+  if (result.error) {
+    console.error("Erreur Resend:", result.error);
+    throw new Error(
+      `Échec de l'envoi de l'e-mail : ${result.error.message || "erreur inconnue de Resend"}`
+    );
+  }
 }
 
 // API Routes
