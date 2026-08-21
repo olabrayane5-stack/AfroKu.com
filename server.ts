@@ -6,6 +6,7 @@ import { GoogleGenAI } from "@google/genai";
 import { MongoClient, Db } from "mongodb";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { Resend } from "resend";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -95,6 +96,30 @@ async function getDb(): Promise<Db> {
 
 // Clé secrète utilisée pour signer les jetons de connexion (JWT)
 const JWT_SECRET = process.env.JWT_SECRET || "";
+// ============================================================================
+// RESEND — Envoi d'e-mails réels (codes OTP pour le mot de passe oublié)
+// ============================================================================
+const resendApiKey = process.env.RESEND_API_KEY;
+const resendClient = resendApiKey ? new Resend(resendApiKey) : null;
+
+async function sendOtpEmail(toEmail: string, code: string) {
+  if (!resendClient) {
+    throw new Error("RESEND_API_KEY est manquant côté serveur.");
+  }
+  await resendClient.emails.send({
+    from: "AfroKu <onboarding@resend.dev>",
+    to: toEmail,
+    subject: "Votre code de vérification AfroKu",
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: auto;">
+        <h2 style="color: #003580;">AfroKu.com</h2>
+        <p>Voici votre code de vérification pour réinitialiser votre mot de passe :</p>
+        <p style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #003580;">${code}</p>
+        <p>Ce code expire dans 10 minutes. Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.</p>
+      </div>
+    `,
+  });
+}
 
 // API Routes
 app.get("/api/test-db", async (req, res) => {
