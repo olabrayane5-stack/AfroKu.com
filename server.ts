@@ -4,6 +4,7 @@ import fs from "fs";
 
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import { MongoClient, Db } from "mongodb"
 
 dotenv.config();
 
@@ -74,8 +75,33 @@ if (apiKey) {
     },
   });
 }
+const mongoUri = process.env.MONGODB_URI;
+let mongoClientPromise: Promise<MongoClient> | null = null;
+function getMongoClient(): Promise<MongoClient> {
+  if (!mongoUri) {
+    throw new Error("MONGODB_URI est manquant.");
+  }
+  if (!mongoClientPromise) {
+    const client = new MongoClient(mongoUri);
+    mongoClientPromise = client.connect();
+  }
+  return mongoClientPromise;
+}
+async function getDb(): Promise<Db> {
+  const client = await getMongoClient();
+  return client.db("afroku");
+}
 
 // API Routes
+app.get("/api/test-db", async (req, res) => {
+  try {
+    const db = await getDb();
+    await db.command({ ping: 1 });
+    res.json({ status: "ok", message: "Connexion reussie !" });
+  } catch (err: any) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
 
 app.post("/api/ai/chat", apiRateLimiter, async (req, res) => {
   try {
