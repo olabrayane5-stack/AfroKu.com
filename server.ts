@@ -3,9 +3,10 @@ import path from "path";
 import fs from "fs";
 
 import { GoogleGenAI } from "@google/genai";
+import { MongoClient, Db } from "mongodb";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { MongoClient, Db } from "mongodb"
-
 dotenv.config();
 
 const app = express();
@@ -92,6 +93,9 @@ async function getDb(): Promise<Db> {
   return client.db("afroku");
 }
 
+// Clé secrète utilisée pour signer les jetons de connexion (JWT)
+const JWT_SECRET = process.env.JWT_SECRET || "";
+
 // API Routes
 app.get("/api/test-db", async (req, res) => {
   try {
@@ -100,6 +104,70 @@ app.get("/api/test-db", async (req, res) => {
     res.json({ status: "ok", message: "Connexion reussie !" });
   } catch (err: any) {
     res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+app.post("/api/auth/register", async (req, res) => {
+  try {
+    const { name, email, password, role, phone } = req.body || {};
+
+    if (!name || typeof name !== "string" || name.trim().length < 2) {
+      return res.status(400).json({ error: "Le nom doit comporter au moins 2 caractères." });
+    }
+    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      return res.status(400).json({ error: "Adresse e-mail invalide." });
+    }
+    if (!password || typeof password !== "string" || password.length < 6) {
+      return res.status(400).json({ error: "Le mot de passe doit comporter au moins 6 caractères." });
+    }
+    const allowedRoles = ["tourist", "guide", "artisan"];
+    const cleanRole = allowedRoles.includes(role) ? role : "tourist";
+
+    const db = await getDb();
+    const users = db.collection("users");
+
+    const existing = await users.findOne({ email: cleanEmail });
+    if (existing) {
+      return res.status(409).json({ error: "Un compte existe déjà avec cet e-mail." });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const newUser = {
+      name: name.trim(),
+      email: cleanEmail,
+      passwordHash,
+      role: cleanRole,
+      phone: typeof phone === "string" ? phone.trim() : "",
+      accreditationStatus: cleanRole === "tourist" ? "verified" : "pending",
+      createdAt: new Date(),
+    };
+    const result = await users.insertOne(newUser);
+
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET est manquant côté serveur.");
+    }
+    const token = jwt.sign(
+      { userId: result.insertedId.toString(), email: cleanEmail, role: cleanRole },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.status(201).json({
+      token,
+      user: {
+        id: result.insertedId.toString(),
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        accreditationStatus: newUser.accreditationStatus,
+      },
+    });
+  } catch (err: any) {
+    console.error("Erreur /api/auth/register:", err);
+    res.status(500).json({ error: "Erreur serveur lors de l'inscription." });
   }
 });
 
