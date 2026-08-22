@@ -78,3 +78,24 @@ export async function confirmPasswordReset(
   });
   return parseOrThrow(response);
 }
+
+/**
+ * Soumet une candidature Guide ou Artisan. Nécessite un token JWT (compte
+ * connecté) — envoyé dans l'en-tête Authorization, vérifié par le
+ * middleware requireAuth côté serveur.
+ */
+export async function submitPartnerApplication(
+  token: string,
+  type: 'guide' | 'artisan',
+  details: Record<string, any>
+): Promise<{ success: boolean; applicationId: string; message: string }> {
+  const response = await fetch('/api/partner/apply', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ type, details }),
+  });
+  return parseOrThrow(response);
+}
