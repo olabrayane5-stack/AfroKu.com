@@ -1,13 +1,17 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-
+// NOTE: on n'importe PAS "vite" en haut du fichier (import statique).
+// Vite/rollup ne doivent être chargés qu'en dev local, jamais dans la
+// fonction serverless Vercel — sinon ça fait planter la fonction entière
+// (voir import() dynamique plus bas dans startServer()).
 import { GoogleGenAI } from "@google/genai";
 import { MongoClient, Db } from "mongodb";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const app = express();
@@ -77,11 +81,24 @@ if (apiKey) {
     },
   });
 }
+
+// ============================================================================
+// MONGODB — Connexion à la base de données (comptes utilisateurs)
+// ============================================================================
+// IMPORTANT (leçon serverless) : sur Vercel, une fonction peut être réutilisée
+// entre deux requêtes ("warm start"). Si on ouvrait une NOUVELLE connexion
+// MongoDB à chaque requête, on épuiserait vite le nombre de connexions
+// autorisées par le cluster gratuit. On garde donc une seule "promesse de
+// connexion" en mémoire (mongoClientPromise) et on la réutilise à chaque
+// appel — exactement comme aiClient ci-dessus.
 const mongoUri = process.env.MONGODB_URI;
 let mongoClientPromise: Promise<MongoClient> | null = null;
+
 function getMongoClient(): Promise<MongoClient> {
   if (!mongoUri) {
-    throw new Error("MONGODB_URI est manquant.");
+    throw new Error(
+      "MONGODB_URI est manquant. Ajoute cette variable d'environnement dans Vercel."
+    );
   }
   if (!mongoClientPromise) {
     const client = new MongoClient(mongoUri);
@@ -89,6 +106,9 @@ function getMongoClient(): Promise<MongoClient> {
   }
   return mongoClientPromise;
 }
+
+// Raccourci pour accéder à la base "afroku" (créée automatiquement au
+// premier écrit — pas besoin de la créer à la main sur Atlas)
 async function getDb(): Promise<Db> {
   const client = await getMongoClient();
   return client.db("afroku");
@@ -96,6 +116,41 @@ async function getDb(): Promise<Db> {
 
 // Clé secrète utilisée pour signer les jetons de connexion (JWT)
 const JWT_SECRET = process.env.JWT_SECRET || "";
+
+// ============================================================================
+// MIDDLEWARE D'AUTHENTIFICATION — réutilisable sur toute route protégée
+// ============================================================================
+// Étend le type Request d'Express pour y accrocher l'utilisateur décodé
+// depuis son JWT, une fois vérifié.
+declare global {
+  namespace Express {
+    interface Request {
+      authUser?: { userId: string; email: string; role: string };
+    }
+  }
+}
+
+/**
+ * Vérifie qu'une requête porte un jeton JWT valide (header
+ * "Authorization: Bearer <token>"). Si oui, attache l'utilisateur décodé à
+ * req.authUser et laisse passer. Sinon, renvoie 401 immédiatement — la
+ * route protégée n'est jamais exécutée.
+ */
+function requireAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Authentification requise." });
+  }
+  const token = authHeader.slice("Bearer ".length);
+  try {
+    const payload = jwt.verify(token, JWT_SECRET) as { userId: string; email: string; role: string };
+    req.authUser = payload;
+    next();
+  } catch {
+    return res.status(401).json({ error: "Session invalide ou expirée. Veuillez vous reconnecter." });
+  }
+}
+
 // ============================================================================
 // RESEND — Envoi d'e-mails réels (codes OTP pour le mot de passe oublié)
 // ============================================================================
@@ -106,7 +161,11 @@ async function sendOtpEmail(toEmail: string, code: string) {
   if (!resendClient) {
     throw new Error("RESEND_API_KEY est manquant côté serveur.");
   }
-    const result = await resendClient.emails.send({
+  // "onboarding@resend.dev" est l'adresse d'expéditeur de test fournie par
+  // Resend, utilisable sans nom de domaine personnel. Sans domaine vérifié,
+  // Resend n'autorise l'envoi qu'à l'adresse du compte Resend lui-même —
+  // suffisant pour la démo, à remplacer plus tard par un domaine AfroKu.
+  const result = await resendClient.emails.send({
     from: "AfroKu <onboarding@resend.dev>",
     to: toEmail,
     subject: "Votre code de vérification AfroKu",
@@ -119,7 +178,11 @@ async function sendOtpEmail(toEmail: string, code: string) {
       </div>
     `,
   });
-  
+
+  // IMPORTANT : le SDK Resend ne lève PAS d'exception pour les erreurs
+  // "métier" (ex: domaine non vérifié) — il les renvoie dans result.error.
+  // Sans cette vérification explicite, notre code pensait que tout allait
+  // bien alors que l'e-mail n'était jamais parti.
   if (result.error) {
     console.error("Erreur Resend:", result.error);
     throw new Error(
@@ -129,20 +192,30 @@ async function sendOtpEmail(toEmail: string, code: string) {
 }
 
 // API Routes
+
+// ----------------------------------------------------------------------
+// ROUTE TEMPORAIRE DE TEST — à supprimer une fois la connexion vérifiée.
+// Elle ne fait qu'essayer de parler à MongoDB et renvoyer "ok" ou l'erreur.
+// ----------------------------------------------------------------------
 app.get("/api/test-db", async (req, res) => {
   try {
     const db = await getDb();
-    await db.command({ ping: 1 });
-    res.json({ status: "ok", message: "Connexion reussie !" });
+    await db.command({ ping: 1 }); // ping = "es-tu vivante ?", ne touche à aucune donnée
+    res.json({ status: "ok", message: "Connexion à MongoDB Atlas réussie !" });
   } catch (err: any) {
+    console.error("Erreur de connexion MongoDB:", err);
     res.status(500).json({ status: "error", message: err.message });
   }
 });
 
+// ----------------------------------------------------------------------
+// POST /api/auth/register — Inscription d'un nouvel utilisateur
+// ----------------------------------------------------------------------
 app.post("/api/auth/register", async (req, res) => {
   try {
     const { name, email, password, role, phone } = req.body || {};
 
+    // 1) Validation des entrées (jamais faire confiance aux données reçues)
     if (!name || typeof name !== "string" || name.trim().length < 2) {
       return res.status(400).json({ error: "Le nom doit comporter au moins 2 caractères." });
     }
@@ -160,13 +233,16 @@ app.post("/api/auth/register", async (req, res) => {
     const db = await getDb();
     const users = db.collection("users");
 
+    // 2) Vérifier que l'e-mail n'est pas déjà utilisé
     const existing = await users.findOne({ email: cleanEmail });
     if (existing) {
       return res.status(409).json({ error: "Un compte existe déjà avec cet e-mail." });
     }
 
+    // 3) Hacher le mot de passe — JAMAIS stocké en clair
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // 4) Créer le document utilisateur en base
     const newUser = {
       name: name.trim(),
       email: cleanEmail,
@@ -178,6 +254,7 @@ app.post("/api/auth/register", async (req, res) => {
     };
     const result = await users.insertOne(newUser);
 
+    // 5) Générer un jeton JWT pour connecter l'utilisateur immédiatement après inscription
     if (!JWT_SECRET) {
       throw new Error("JWT_SECRET est manquant côté serveur.");
     }
@@ -187,6 +264,7 @@ app.post("/api/auth/register", async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    // 6) Répondre — ne JAMAIS renvoyer passwordHash au frontend
     res.status(201).json({
       token,
       user: {
@@ -202,6 +280,10 @@ app.post("/api/auth/register", async (req, res) => {
     res.status(500).json({ error: "Erreur serveur lors de l'inscription." });
   }
 });
+
+// ----------------------------------------------------------------------
+// POST /api/auth/login — Connexion d'un utilisateur existant
+// ----------------------------------------------------------------------
 app.post("/api/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body || {};
@@ -214,18 +296,24 @@ app.post("/api/auth/login", async (req, res) => {
     const db = await getDb();
     const users = db.collection("users");
 
+    // 1) Chercher le compte par e-mail
     const user = await users.findOne({ email: cleanEmail });
 
+    // Message d'erreur volontairement IDENTIQUE que l'email existe ou non :
+    // ça évite qu'un attaquant devine quels e-mails sont déjà inscrits
+    // (technique dite "d'énumération de comptes").
     const genericError = "E-mail ou mot de passe incorrect.";
     if (!user) {
       return res.status(401).json({ error: genericError });
     }
 
+    // 2) Comparer le mot de passe fourni avec le hash stocké
     const passwordMatches = await bcrypt.compare(password, user.passwordHash);
     if (!passwordMatches) {
       return res.status(401).json({ error: genericError });
     }
 
+    // 3) Générer un nouveau jeton JWT
     if (!JWT_SECRET) {
       throw new Error("JWT_SECRET est manquant côté serveur.");
     }
@@ -235,6 +323,7 @@ app.post("/api/auth/login", async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    // 4) Répondre — jamais le passwordHash
     res.status(200).json({
       token,
       user: {
@@ -269,10 +358,12 @@ app.post("/api/auth/forgot-password", async (req, res) => {
       return res.status(404).json({ error: "Aucun compte AfroKu n'est enregistré avec cette adresse e-mail." });
     }
 
+    // Génère un code à 6 chiffres
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const codeHash = await bcrypt.hash(code, 10);
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // valable 10 minutes
 
+    // Un seul code actif par e-mail : on remplace l'ancien s'il existe
     const otps = db.collection("otps");
     await otps.updateOne(
       { email: cleanEmail },
@@ -313,6 +404,9 @@ app.post("/api/auth/verify-otp", async (req, res) => {
       return res.status(400).json({ error: "Code de vérification incorrect." });
     }
 
+    // Le code est valide : on délivre un jeton temporaire (10 min) qui
+    // autorise UNIQUEMENT le changement de mot de passe pour cet e-mail —
+    // il ne sert à rien d'autre (pas de connexion générale possible avec).
     if (!JWT_SECRET) {
       throw new Error("JWT_SECRET est manquant côté serveur.");
     }
@@ -360,6 +454,8 @@ app.post("/api/auth/reset-password", async (req, res) => {
       { $set: { passwordHash } }
     );
 
+    // Le code OTP a servi son rôle, on le supprime pour qu'il ne puisse
+    // plus être réutilisé.
     await db.collection("otps").deleteOne({ email: payload.email });
 
     res.status(200).json({ success: true, message: "Mot de passe réinitialisé avec succès." });
@@ -369,125 +465,48 @@ app.post("/api/auth/reset-password", async (req, res) => {
   }
 });
 
-
 // ----------------------------------------------------------------------
-// POST /api/auth/forgot-password — Étape 1 : demande d'un code OTP par e-mail
+// POST /api/partner/apply — Soumission d'une candidature Guide ou Artisan
+// Protégée : requireAuth exige un compte connecté (JWT valide) avant même
+// d'exécuter le code de la route.
 // ----------------------------------------------------------------------
-app.post("/api/auth/forgot-password", async (req, res) => {
+app.post("/api/partner/apply", requireAuth, async (req, res) => {
   try {
-    const { email } = req.body || {};
-    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
-    if (!cleanEmail) {
-      return res.status(400).json({ error: "Veuillez saisir une adresse e-mail." });
+    const { type, details } = req.body || {};
+
+    if (type !== "guide" && type !== "artisan") {
+      return res.status(400).json({ error: "Type de candidature invalide." });
+    }
+    if (!details || typeof details !== "object") {
+      return res.status(400).json({ error: "Les informations du dossier sont manquantes." });
     }
 
     const db = await getDb();
-    const users = db.collection("users");
-    const user = await users.findOne({ email: cleanEmail });
-    if (!user) {
-      return res.status(404).json({ error: "Aucun compte AfroKu n'est enregistré avec cette adresse e-mail." });
-    }
+    const applications = db.collection("partnerApplications");
 
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const codeHash = await bcrypt.hash(code, 10);
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    const newApplication = {
+      userId: req.authUser!.userId,
+      email: req.authUser!.email,
+      type, // "guide" | "artisan"
+      details, // toutes les infos du formulaire (ville, tarifs, spécialités...)
+      status: "pending", // pending | approved | rejected
+      adminNotes: "",
+      submittedAt: new Date(),
+      reviewedAt: null,
+    };
 
-    const otps = db.collection("otps");
-    await otps.updateOne(
-      { email: cleanEmail },
-      { $set: { email: cleanEmail, codeHash, expiresAt, verified: false, createdAt: new Date() } },
-      { upsert: true }
-    );
+    const result = await applications.insertOne(newApplication);
 
-    await sendOtpEmail(cleanEmail, code);
-
-    res.status(200).json({ success: true, message: "Un code de vérification a été envoyé par e-mail." });
+    res.status(201).json({
+      success: true,
+      applicationId: result.insertedId.toString(),
+      message: "Candidature envoyée avec succès. Elle sera examinée sous 24h.",
+    });
   } catch (err: any) {
-    console.error("Erreur /api/auth/forgot-password:", err);
-    res.status(500).json({ error: "Erreur serveur lors de l'envoi du code." });
+    console.error("Erreur /api/partner/apply:", err);
+    res.status(500).json({ error: "Erreur serveur lors de l'envoi de la candidature." });
   }
 });
-
-// ----------------------------------------------------------------------
-// POST /api/auth/verify-otp — Étape 2 : vérification du code reçu
-// ----------------------------------------------------------------------
-app.post("/api/auth/verify-otp", async (req, res) => {
-  try {
-    const { email, code } = req.body || {};
-    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
-    if (!cleanEmail || !code) {
-      return res.status(400).json({ error: "Veuillez saisir le code reçu." });
-    }
-
-    const db = await getDb();
-    const otps = db.collection("otps");
-    const otpRecord = await otps.findOne({ email: cleanEmail });
-
-    if (!otpRecord || new Date() > new Date(otpRecord.expiresAt)) {
-      return res.status(400).json({ error: "Code expiré. Veuillez en demander un nouveau." });
-    }
-
-    const codeMatches = await bcrypt.compare(code, otpRecord.codeHash);
-    if (!codeMatches) {
-      return res.status(400).json({ error: "Code de vérification incorrect." });
-    }
-
-    if (!JWT_SECRET) {
-      throw new Error("JWT_SECRET est manquant côté serveur.");
-    }
-    const resetToken = jwt.sign(
-      { email: cleanEmail, purpose: "password_reset" },
-      JWT_SECRET,
-      { expiresIn: "10m" }
-    );
-
-    res.status(200).json({ success: true, resetToken });
-  } catch (err: any) {
-    console.error("Erreur /api/auth/verify-otp:", err);
-    res.status(500).json({ error: "Erreur serveur lors de la vérification." });
-  }
-});
-
-// ----------------------------------------------------------------------
-// POST /api/auth/reset-password — Étape 3 : définir le nouveau mot de passe
-// ----------------------------------------------------------------------
-app.post("/api/auth/reset-password", async (req, res) => {
-  try {
-    const { resetToken, newPassword } = req.body || {};
-    if (!resetToken || !newPassword || newPassword.length < 6) {
-      return res.status(400).json({ error: "Le mot de passe doit comporter au moins 6 caractères." });
-    }
-
-    if (!JWT_SECRET) {
-      throw new Error("JWT_SECRET est manquant côté serveur.");
-    }
-
-    let payload: any;
-    try {
-      payload = jwt.verify(resetToken, JWT_SECRET);
-    } catch {
-      return res.status(401).json({ error: "Session expirée. Veuillez recommencer la procédure." });
-    }
-    if (!payload || payload.purpose !== "password_reset") {
-      return res.status(401).json({ error: "Jeton invalide." });
-    }
-
-    const db = await getDb();
-    const passwordHash = await bcrypt.hash(newPassword, 10);
-    await db.collection("users").updateOne(
-      { email: payload.email },
-      { $set: { passwordHash } }
-    );
-
-    await db.collection("otps").deleteOne({ email: payload.email });
-
-    res.status(200).json({ success: true, message: "Mot de passe réinitialisé avec succès." });
-  } catch (err: any) {
-    console.error("Erreur /api/auth/reset-password:", err);
-    res.status(500).json({ error: "Erreur serveur lors de la réinitialisation." });
-  }
-});
-
 
 app.post("/api/ai/chat", apiRateLimiter, async (req, res) => {
   try {
@@ -1251,6 +1270,8 @@ async function startServer() {
       res.sendFile(path.join(distPath, "index.html"));
     });
   } else {
+    // Import dynamique : ce code ne s'exécute (et ne charge vite) QUE
+    // quand on lance "npm run dev" en local. Jamais sur Vercel.
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -1277,6 +1298,9 @@ async function startServer() {
 
 export default app;
 
+// IMPORTANT : sur Vercel, on ne doit JAMAIS appeler startServer() ni
+// app.listen() — Vercel gère lui-même la fonction serverless. On exporte
+// juste "app", et Vercel l'utilise directement via vercel.json.
 if (!process.env.VERCEL) {
   startServer();
 }
