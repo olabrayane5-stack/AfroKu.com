@@ -31,6 +31,7 @@ import {
 import { saveApplication } from '../../services/partnerStore';
 import { PartnerApplication } from '../../types';
 import { COUNTRIES_LIST, getCitiesByCountry, getCountryByName } from '../../data/countriesData';
+import { useAuth } from '../../context/AuthContext';
 
 interface PartnerRegistrationModalProps {
   isOpen: boolean;
@@ -43,6 +44,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   onClose,
   defaultType = 'guide',
 }) => {
+  const { user } = useAuth();
   const [partnerType, setPartnerType] = useState<'guide' | 'artisan'>(defaultType);
   const [step, setStep] = useState<'form' | 'success'>('form');
   const [submittedApp, setSubmittedApp] = useState<PartnerApplication | null>(null);
@@ -155,7 +157,10 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
     setCvFileSize('');
   };
 
-  if (!isOpen) return null;
+  // Sécurité (couche 2) : même si ce modal était ouvert par un moyen détourné
+  // (ex: manipulation du state via la console), on refuse catégoriquement
+  // de l'afficher sans utilisateur connecté.
+  if (!isOpen || !user) return null;
 
   const finalCountry = country === 'Autre pays...' ? customCountry : country;
   const finalCity = city === 'AUTRE' ? customCity : city;
@@ -163,6 +168,12 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    // Sécurité : refus catégorique de toute soumission sans compte connecté.
+    if (!user) {
+      setError('Vous devez être connecté pour soumettre une candidature.');
+      return;
+    }
 
     if (!fullName.trim() || !email.trim() || !phoneWhatsApp.trim() || !finalCity.trim()) {
       setError('Veuillez remplir tous les champs obligatoires (*).');
