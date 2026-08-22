@@ -51,6 +51,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
   const [signupNotice, setSignupNotice] = useState('');
   const [success, setSuccess] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
     if (type) {
@@ -69,6 +71,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
       setPassword('');
       setFullName('');
       setNewPassword('');
+      setIsRegistering(false);
+      setIsLoggingIn(false);
 
       const prevBodyOverflow = document.body.style.overflow;
       const prevHtmlOverflow = document.documentElement.style.overflow;
@@ -139,7 +143,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
         return;
       }
 
-      const res = await signup(fullName, email, password);
+      const res = await (async () => {
+        setIsRegistering(true);
+        try {
+          return await signup(fullName, email, password);
+        } finally {
+          setIsRegistering(false);
+        }
+      })();
       if (!res.success) {
         setErrorMsg(res.error || 'Erreur lors de la création du compte.');
         return;
@@ -148,7 +159,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
       setSignupNotice('🎉 Compte voyageur créé avec succès ! Vous pouvez maintenant vous connecter.');
       setCurrentView('login');
     } else if (currentView === 'login') {
-      const res = await login(email, password);
+      const res = await (async () => {
+        setIsLoggingIn(true);
+        try {
+          return await login(email, password);
+        } finally {
+          setIsLoggingIn(false);
+        }
+      })();
       if (!res.success) {
         setErrorMsg(res.error || 'Erreur lors de la connexion.');
         return;
@@ -547,7 +565,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
 
             <button
               type="submit"
-              className={`w-full py-2.5 text-white font-bold text-sm rounded-lg shadow-md transition-colors cursor-pointer ${
+              disabled={isRegistering || isLoggingIn}
+              className={`w-full py-2.5 text-white font-bold text-sm rounded-lg shadow-md transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
                 signupRole === 'guide' && currentView === 'signup'
                   ? 'bg-amber-600 hover:bg-amber-700'
                   : signupRole === 'artisan' && currentView === 'signup'
@@ -555,10 +574,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
                   : 'bg-[#003580] hover:bg-[#002866]'
               }`}
             >
-              {currentView === 'signup' && signupRole === 'tourist' && 'Créer mon compte Voyageur'}
-              {currentView === 'signup' && signupRole === 'guide' && 'Soumettre mon dossier Guide (Accréditation 24h)'}
-              {currentView === 'signup' && signupRole === 'artisan' && 'Soumettre mon dossier Artisan (Accréditation 24h)'}
-              {currentView === 'login' && 'Se connecter'}
+              {(isRegistering || isLoggingIn) && (
+                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+              )}
+              {!isRegistering && !isLoggingIn && currentView === 'signup' && signupRole === 'tourist' && 'Créer mon compte Voyageur'}
+              {!isRegistering && !isLoggingIn && currentView === 'signup' && signupRole === 'guide' && 'Soumettre mon dossier Guide (Accréditation 24h)'}
+              {!isRegistering && !isLoggingIn && currentView === 'signup' && signupRole === 'artisan' && 'Soumettre mon dossier Artisan (Accréditation 24h)'}
+              {!isRegistering && !isLoggingIn && currentView === 'login' && 'Se connecter'}
+              {isRegistering && 'Création du compte...'}
+              {isLoggingIn && 'Connexion en cours...'}
             </button>
 
             <div className="text-center pt-2">
