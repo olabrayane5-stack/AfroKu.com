@@ -400,43 +400,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type, onClose, openOther }
           <form onSubmit={handleSubmit} className="space-y-4">
             {currentView === 'signup' && (
               <div className="space-y-3">
-                {/* Sélecteur de rôle en 3 Onglets */}
-                <div className="flex rounded-xl bg-slate-100 p-1 border border-slate-200">
-                  <button
-                    type="button"
-                    onClick={() => setSignupRole('tourist')}
-                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1 ${
-                      signupRole === 'tourist'
-                        ? 'bg-[#003580] text-white shadow-xs'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    <span>🧳 Voyageur</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSignupRole('guide')}
-                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1 ${
-                      signupRole === 'guide'
-                        ? 'bg-amber-600 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    <span>🚩 Guide 🛡️</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSignupRole('artisan')}
-                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1 ${
-                      signupRole === 'artisan'
-                        ? 'bg-emerald-600 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-slate-900'
-                    }`}
-                  >
-                    <span>🎨 Artisan 🔨</span>
-                  </button>
-                </div>
-
                 {signupRole === 'guide' && (
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-2.5 text-xs text-amber-900 leading-tight">
                     🛡️ <strong>Accréditation Guide Certifié :</strong> Votre CNI et carte de guide seront évaluées par l'administrateur sous 24h-48h.
