@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Building2, MapPin, Phone, Mail, CheckCircle, Palette, UserCheck, Car, Utensils, Users, Compass, Landmark, Ticket, Sparkles, Wine, Briefcase, Globe } from 'lucide-react';
 import { COUNTRIES_LIST, getCitiesByCountry, getCountryByName } from '../../data/countriesData';
+import { useAuth } from '../../context/AuthContext';
 
 interface AddPropertyModalProps {
   isOpen: boolean;
@@ -22,6 +23,7 @@ const PARTNER_OPTIONS = [
 ];
 
 export const AddPropertyModal: React.FC<AddPropertyModalProps> = ({ isOpen, onClose }) => {
+  const { user } = useAuth();
   const [propertyName, setPropertyName] = useState('');
   const [propertyType, setPropertyType] = useState('Hôtel, Auberge ou Gîte');
   const [country, setCountry] = useState('Bénin');
@@ -63,10 +65,14 @@ export const AddPropertyModal: React.FC<AddPropertyModalProps> = ({ isOpen, onCl
     }
   };
 
-  if (!isOpen) return null;
+  // Sécurité (couche 2) : refus catégorique d'affichage sans compte connecté,
+  // même si ce modal était ouvert par un moyen détourné.
+  if (!isOpen || !user) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Sécurité : refus catégorique de toute soumission sans compte connecté.
+    if (!user) return;
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
