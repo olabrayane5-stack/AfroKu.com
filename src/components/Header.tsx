@@ -38,6 +38,18 @@ export const Header: React.FC<HeaderProps> = ({
   selectedCurrency,
 }) => {
   const { user, logout } = useAuth();
+
+  // Sécurité : ouvre le modal demandé UNIQUEMENT si un utilisateur est
+  // connecté. Sinon, redirige vers la connexion — utilisé par les boutons
+  // "Devenir Partenaire" et "Ajouter un hébergement", qui ne doivent
+  // jamais être accessibles à un visiteur non authentifié.
+  const openProtectedModal = (modal: ModalType) => {
+    if (!user) {
+      openModal('auth_login');
+      return;
+    }
+    openModal(modal);
+  };
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [helpModalOpen, setHelpModalOpen] = useState(false);
@@ -235,14 +247,14 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Liens secondaires professionnels simples et blancs */}
             <div className="flex items-center space-x-3 lg:space-x-5 text-xs lg:text-sm font-medium text-white/85">
               <button
-                onClick={() => openModal('partner_register')}
+                onClick={() => openProtectedModal('partner_register')}
                 className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
               >
                 Devenir Partenaire
               </button>
               <span className="text-white/30">•</span>
               <button
-                onClick={() => openModal('add_property')}
+                onClick={() => openProtectedModal('add_property')}
                 className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
               >
                 Ajouter un hébergement
@@ -313,7 +325,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="space-y-1 pb-2 border-b border-white/10 text-xs">
               <button
                 onClick={() => {
-                  openModal('partner_register');
+                  openProtectedModal('partner_register');
                   setMobileMenuOpen(false);
                 }}
                 className="w-full text-left py-2 px-2 text-white/90 hover:text-white flex items-center gap-2 font-medium"
@@ -322,7 +334,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               <button
                 onClick={() => {
-                  openModal('add_property');
+                  openProtectedModal('add_property');
                   setMobileMenuOpen(false);
                 }}
                 className="w-full text-left py-2 px-2 text-white/90 hover:text-white flex items-center gap-2 font-medium"
