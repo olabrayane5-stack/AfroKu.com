@@ -28,8 +28,7 @@ import {
   ChevronRight,
   BadgeCheck
 } from 'lucide-react';
-import { saveApplication } from '../../services/partnerStore';
-import { PartnerApplication } from '../../types';
+import { submitPartnerApplication } from '../../services/authService';
 import { COUNTRIES_LIST, getCitiesByCountry, getCountryByName } from '../../data/countriesData';
 import { useAuth } from '../../context/AuthContext';
 
@@ -44,10 +43,10 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   onClose,
   defaultType = 'guide',
 }) => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [partnerType, setPartnerType] = useState<'guide' | 'artisan'>(defaultType);
   const [step, setStep] = useState<'form' | 'success'>('form');
-  const [submittedApp, setSubmittedApp] = useState<PartnerApplication | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   // Form states
   const [fullName, setFullName] = useState('');
@@ -165,12 +164,12 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   const finalCountry = country === 'Autre pays...' ? customCountry : country;
   const finalCity = city === 'AUTRE' ? customCity : city;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     // Sécurité : refus catégorique de toute soumission sans compte connecté.
-    if (!user) {
+    if (!user || !token) {
       setError('Vous devez être connecté pour soumettre une candidature.');
       return;
     }
@@ -191,8 +190,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
 
     const finalCraft = craftType === 'AUTRE' ? (customCraftType.trim() || 'Artisanat divers') : craftType;
 
-    const created = saveApplication({
-      type: partnerType,
+    const details = {
       fullName: fullName.trim(),
       email: email.trim(),
       phoneWhatsApp: phoneWhatsApp.trim(),
@@ -213,15 +211,21 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
             physicalAddress: physicalAddress.trim() || `${finalCity}, ${finalCountry}`,
             workshopPriceXOF: Number(workshopPriceXOF) || 10000,
           }),
-    });
+    };
 
-    setSubmittedApp(created);
-    setStep('success');
+    try {
+      setSubmitting(true);
+      await submitPartnerApplication(token, partnerType, details);
+      setStep('success');
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de l\'envoi de la candidature.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleResetAndClose = () => {
     setStep('form');
-    setSubmittedApp(null);
     setFullName('');
     setEmail('');
     setPhoneWhatsApp('');
@@ -634,10 +638,14 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                     </button>
                     <button
                       type="submit"
-                      className="w-1/2 sm:w-auto px-6 py-2.5 rounded-xl bg-[#002866] hover:bg-[#001f52] text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      disabled={submitting}
+                      className="w-1/2 sm:w-auto px-6 py-2.5 rounded-xl bg-[#002866] hover:bg-[#001f52] text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      <span>Soumettre ma candidature</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      {submitting && (
+                        <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                      )}
+                      <span>{submitting ? 'Envoi en cours...' : 'Soumettre ma candidature'}</span>
+                      {!submitting && <ArrowRight className="w-3.5 h-3.5" />}
                     </button>
                   </div>
                 </div>
