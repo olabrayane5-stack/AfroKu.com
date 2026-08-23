@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -28,7 +28,7 @@ import {
   ChevronRight,
   BadgeCheck
 } from 'lucide-react';
-import { submitPartnerApplication } from '../../services/authService';
+import { submitPartnerApplication, getMyPartnerApplication, PartnerApplicationStatus } from '../../services/authService';
 import { COUNTRIES_LIST, getCitiesByCountry, getCountryByName } from '../../data/countriesData';
 import { useAuth } from '../../context/AuthContext';
 
@@ -48,10 +48,18 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   const [step, setStep] = useState<'form' | 'success'>('form');
   const [submitting, setSubmitting] = useState(false);
 
+  // Statut de la candidature déjà existante (pending/approved/rejected),
+  // vérifié à l'ouverture de la fenêtre, avant même d'afficher le formulaire.
+  const [checkingStatus, setCheckingStatus] = useState(true);
+  const [existingApplication, setExistingApplication] = useState<PartnerApplicationStatus | null>(null);
+
   // Form states
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneWhatsApp, setPhoneWhatsApp] = useState('');
+  const [idDocumentType, setIdDocumentType] = useState<'CNI' | 'CIP' | 'Passeport'>('CNI');
+  const [idDocumentNumber, setIdDocumentNumber] = useState('');
+  const [mobileMoneyNumber, setMobileMoneyNumber] = useState('');
   const [country, setCountry] = useState('Bénin');
   const [customCountry, setCustomCountry] = useState('');
   const [city, setCity] = useState('Cotonou');
@@ -64,6 +72,14 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   const [photoFileName, setPhotoFileName] = useState<string>('');
   const [cvFileName, setCvFileName] = useState<string>('');
   const [cvFileSize, setCvFileSize] = useState<string>('');
+
+  // Photo de la pièce d'identité (le type et le numéro existent déjà :
+  // idDocumentType / idDocumentNumber, juste au-dessus)
+  const [documentPreview, setDocumentPreview] = useState<string | null>(null);
+  const [documentFileName, setDocumentFileName] = useState<string>('');
+
+  // Artisan : nom du responsable (si différent du nom déjà saisi)
+  const [workshopManagerName, setWorkshopManagerName] = useState<string>('');
 
   // Guide fields
   const [languages, setLanguages] = useState<string>('Français, Fon');
@@ -138,6 +154,27 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
     setPhotoFileName('');
   };
 
+  const handleDocumentUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Le document ne doit pas dépasser 5 Mo.');
+        return;
+      }
+      setDocumentFileName(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setDocumentPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveDocument = () => {
+    setDocumentPreview(null);
+    setDocumentFileName('');
+  };
+
   const handleCvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -155,6 +192,24 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
     setCvFileName('');
     setCvFileSize('');
   };
+
+  // L'e-mail du formulaire suit toujours celui du compte connecté — jamais
+  // saisi manuellement. On resynchronise à chaque fois que "user" change
+  // (ex: chargement initial de la session, ou changement de compte).
+  useEffect(() => {
+    setEmail(user?.email || '');
+  }, [user]);
+
+  // À chaque ouverture de la fenêtre, on vérifie d'abord si une candidature
+  // existe déjà pour cet utilisateur — avant même d'afficher le formulaire.
+  useEffect(() => {
+    if (!isOpen || !token) return;
+    setCheckingStatus(true);
+    getMyPartnerApplication(token)
+      .then(({ application }) => setExistingApplication(application))
+      .catch(() => setExistingApplication(null))
+      .finally(() => setCheckingStatus(false));
+  }, [isOpen, token]);
 
   // Sécurité (couche 2) : même si ce modal était ouvert par un moyen détourné
   // (ex: manipulation du state via la console), on refuse catégoriquement
@@ -174,8 +229,25 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
       return;
     }
 
-    if (!fullName.trim() || !email.trim() || !phoneWhatsApp.trim() || !finalCity.trim()) {
+    if (
+      !fullName.trim() ||
+      !email.trim() ||
+      !phoneWhatsApp.trim() ||
+      !finalCity.trim() ||
+      !idDocumentNumber.trim() ||
+      !mobileMoneyNumber.trim()
+    ) {
       setError('Veuillez remplir tous les champs obligatoires (*).');
+      return;
+    }
+
+    if (!documentPreview) {
+      setError('Veuillez importer une photo lisible de votre pièce d\'identité.');
+      return;
+    }
+
+    if (partnerType === 'artisan' && !workshopManagerName.trim()) {
+      setError('Veuillez indiquer le nom du responsable de l\'atelier.');
       return;
     }
 
@@ -194,6 +266,10 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
       fullName: fullName.trim(),
       email: email.trim(),
       phoneWhatsApp: phoneWhatsApp.trim(),
+      idDocumentType,
+      idDocumentNumber: idDocumentNumber.trim(),
+      documentPhotoUrl: documentPreview || '',
+      mobileMoneyNumber: mobileMoneyNumber.trim(),
       city: `${finalCity} (${finalCountry})`,
       department,
       photoUrl: photoPreview || defaultPhoto,
@@ -207,6 +283,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
           }
         : {
             workshopName: workshopName.trim() || `Atelier ${fullName}`,
+            workshopManagerName: workshopManagerName.trim() || fullName.trim(),
             craftType: finalCraft,
             physicalAddress: physicalAddress.trim() || `${finalCity}, ${finalCountry}`,
             workshopPriceXOF: Number(workshopPriceXOF) || 10000,
@@ -278,6 +355,42 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
 
           {/* Form Content */}
           <div className="p-5 sm:p-8 space-y-7 bg-slate-50/50">
+            {checkingStatus ? (
+              <div className="py-16 text-center text-slate-500 text-sm">
+                Vérification de votre statut...
+              </div>
+            ) : existingApplication && existingApplication.status === 'pending' ? (
+              <div className="py-10 text-center space-y-4">
+                <div className="w-16 h-16 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto shadow-sm">
+                  <Clock className="w-9 h-9" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-900">Dossier en cours d'examen</h3>
+                  <p className="text-xs text-slate-500 mt-2 max-w-md mx-auto leading-relaxed">
+                    Votre candidature {existingApplication.type === 'guide' ? 'Guide' : 'Artisan'} a déjà été
+                    transmise et est en cours d'examen par notre équipe. Vous recevrez une réponse par
+                    e-mail sous 24h.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleResetAndClose}
+                  className="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold text-xs"
+                >
+                  Fermer
+                </button>
+              </div>
+            ) : (
+              <>
+                {existingApplication && existingApplication.status === 'rejected' && step === 'form' && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-xs text-red-800 space-y-1">
+                    <p className="font-bold">Votre précédente candidature n'a pas été retenue.</p>
+                    {existingApplication.adminNotes && (
+                      <p>Motif : {existingApplication.adminNotes}</p>
+                    )}
+                    <p>Vous pouvez corriger vos informations et soumettre un nouveau dossier ci-dessous.</p>
+                  </div>
+                )}
             {step === 'form' ? (
               <form onSubmit={handleSubmit} className="space-y-6">
                 
@@ -373,11 +486,14 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                       <input
                         type="email"
                         required
-                        placeholder="jean.dupont@gmail.com"
+                        readOnly
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#002866] bg-slate-50/50 text-xs font-medium text-slate-900"
+                        title="Cet e-mail est celui de votre compte AfroKu — non modifiable."
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-100 text-xs font-medium text-slate-500 cursor-not-allowed"
                       />
+                      <p className="text-[10px] text-slate-400 mt-1">
+                        L'e-mail de votre compte connecté — non modifiable.
+                      </p>
                     </div>
 
                     <div className="sm:col-span-2">
@@ -392,6 +508,88 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                         onChange={(e) => setPhoneWhatsApp(e.target.value)}
                         className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#002866] bg-slate-50/50 text-xs font-medium text-slate-900"
                       />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                        Type de pièce d'identité *
+                      </label>
+                      <select
+                        required
+                        value={idDocumentType}
+                        onChange={(e) => setIdDocumentType(e.target.value as 'CNI' | 'CIP' | 'Passeport')}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#002866] bg-slate-50/50 text-xs font-medium text-slate-900"
+                      >
+                        <option value="CNI">CNI (Carte Nationale d'Identité)</option>
+                        <option value="CIP">CIP (Carte d'Identité Personnelle)</option>
+                        <option value="Passeport">Passeport Béninois</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                        Numéro de la pièce *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Ex: B0123456"
+                        value={idDocumentNumber}
+                        onChange={(e) => setIdDocumentNumber(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#002866] bg-slate-50/50 text-xs font-medium text-slate-900"
+                      />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                        Photo de la pièce d'identité *
+                      </label>
+                      {documentPreview ? (
+                        <div className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/50">
+                          <img
+                            src={documentPreview}
+                            alt="Pièce d'identité"
+                            className="w-16 h-16 object-cover rounded-lg border border-slate-200"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold text-slate-700 truncate">{documentFileName}</p>
+                            <p className="text-[10px] text-emerald-600">Document importé</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleRemoveDocument}
+                            className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="flex items-center justify-center gap-2 p-3.5 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 cursor-pointer hover:border-[#002866] hover:bg-slate-50 transition-colors">
+                          <Upload className="w-4 h-4 text-slate-500" />
+                          <span className="text-xs font-bold text-slate-600">Importer une photo lisible (JPG, PNG — 5 Mo max)</span>
+                          <input type="file" accept="image/*" onChange={handleDocumentUpload} className="hidden" />
+                        </label>
+                      )}
+                      <p className="text-[10px] text-slate-400 mt-1">
+                        Sert uniquement à la vérification par notre équipe — jamais publiée sur votre profil public.
+                      </p>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                        Numéro Mobile Money (MTN / Moov / Celtiis) *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="+229 01 00 00 00 00"
+                        value={mobileMoneyNumber}
+                        onChange={(e) => setMobileMoneyNumber(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#002866] bg-slate-50/50 text-xs font-medium text-slate-900"
+                      />
+                      <p className="text-[10px] text-slate-400 mt-1">
+                        Numéro sur lequel vous recevrez vos paiements de réservations.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -575,6 +773,23 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
 
                       <div>
                         <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                          Nom du responsable *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Ex: Adjovi Mensah"
+                          value={workshopManagerName}
+                          onChange={(e) => setWorkshopManagerName(e.target.value)}
+                          className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#002866] bg-slate-50/50 text-xs font-medium text-slate-900"
+                        />
+                        <p className="text-[10px] text-slate-400 mt-1">
+                          Si différent de votre nom déjà saisi plus haut.
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
                           Domaine / Type d artisanat *
                         </label>
                         <select
@@ -670,6 +885,8 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                   Fermer
                 </button>
               </div>
+            )}
+              </>
             )}
           </div>
         </motion.div>
