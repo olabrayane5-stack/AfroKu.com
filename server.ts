@@ -17,8 +17,12 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-// Security: Limit JSON payload size to prevent DoS attacks via memory exhaustion
-app.use(express.json({ limit: "10kb" }));
+// Security: Limit JSON payload size to prevent DoS attacks via memory
+// exhaustion. Relevé à 15mb (au lieu de 10kb) pour permettre l'envoi des
+// photos de pièce d'identité encodées en base64 (candidatures Guide/
+// Artisan) — la protection contre les abus reste assurée ailleurs, route
+// par route (ex: /api/ai/chat valide la longueur du message reçu).
+app.use(express.json({ limit: "15mb" }));
 
 // Security: Set HTTP Security Headers
 app.use((req, res, next) => {
