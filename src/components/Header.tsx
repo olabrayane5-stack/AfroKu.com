@@ -240,26 +240,37 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               );
             })}
+
+            {/* Décalés ici depuis le groupe de droite, pour que "Mon Espace"
+                garde toujours une position fixe à l'extrême droite, sans
+                jamais être poussé par ces liens. */}
+            <span className="text-white/20 mx-1">•</span>
+            <button
+              onClick={() => openProtectedModal('partner_register')}
+              className="flex items-center px-3.5 lg:px-4 py-1.5 text-xs lg:text-sm text-white/85 hover:text-white hover:bg-white/10 rounded-full transition-all whitespace-nowrap shrink-0 cursor-pointer font-medium"
+            >
+              Devenir Partenaire
+            </button>
+            <button
+              onClick={() => openProtectedModal('add_property')}
+              className="flex items-center px-3.5 lg:px-4 py-1.5 text-xs lg:text-sm text-white/85 hover:text-white hover:bg-white/10 rounded-full transition-all whitespace-nowrap shrink-0 cursor-pointer font-medium"
+            >
+              Ajouter un hébergement
+            </button>
           </nav>
 
-          {/* À DROITE : Liens Professionnels simples */}
+          {/* À DROITE : "Mon Espace" — position fixe, réservée aux comptes
+              Guide/Artisan approuvés. N'apparaît jamais pour un touriste. */}
           <div className="flex items-center space-x-4 lg:space-x-6">
-            {/* Liens secondaires professionnels simples et blancs */}
-            <div className="flex items-center space-x-3 lg:space-x-5 text-xs lg:text-sm font-medium text-white/85">
+            {user && (user.role === 'guide' || user.role === 'artisan') && (
               <button
-                onClick={() => openProtectedModal('partner_register')}
-                className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+                onClick={() => setActiveTab('mon_espace' as ActiveTab)}
+                className="flex items-center gap-2 px-4 lg:px-5 py-1.5 text-xs lg:text-sm font-bold bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-400/60 rounded-full transition-all whitespace-nowrap shrink-0 cursor-pointer shadow-xs"
               >
-                Devenir Partenaire
+                <UserCheck className="w-4 h-4" />
+                <span>Mon Espace</span>
               </button>
-              <span className="text-white/30">•</span>
-              <button
-                onClick={() => openProtectedModal('add_property')}
-                className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
-              >
-                Ajouter un hébergement
-              </button>
-            </div>
+            )}
           </div>
         </div>
 
@@ -302,6 +313,26 @@ export const Header: React.FC<HeaderProps> = ({
                   </button>
                 );
               })}
+              {/* Décalés ici depuis le bloc "Liens Pro", pour laisser "Mon
+                  Espace" seul occuper cette dernière position, fixe. */}
+              <button
+                onClick={() => {
+                  openProtectedModal('partner_register');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-white/90 hover:bg-white/10 hover:text-white cursor-pointer"
+              >
+                <span>Devenir Partenaire (Guide / Artisan)</span>
+              </button>
+              <button
+                onClick={() => {
+                  openProtectedModal('add_property');
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-white/90 hover:bg-white/10 hover:text-white cursor-pointer"
+              >
+                <span>Ajouter un hébergement</span>
+              </button>
             </div>
 
             {/* Pays & Devise Mobile */}
@@ -321,27 +352,23 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
 
-            {/* Liens Professionnels Mobile */}
-            <div className="space-y-1 pb-2 border-b border-white/10 text-xs">
-              <button
-                onClick={() => {
-                  openProtectedModal('partner_register');
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-left py-2 px-2 text-white/90 hover:text-white flex items-center gap-2 font-medium"
-              >
-                <span>Devenir Partenaire (Guide / Artisan)</span>
-              </button>
-              <button
-                onClick={() => {
-                  openProtectedModal('add_property');
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full text-left py-2 px-2 text-white/90 hover:text-white flex items-center gap-2 font-medium"
-              >
-                <span>Ajouter un hébergement</span>
-              </button>
-            </div>
+            {/* "Mon Espace" — position fixe, réservée aux comptes Guide/
+                Artisan approuvés. Occupe la place que tenait auparavant
+                "Ajouter un hébergement", jamais poussée par les autres liens. */}
+            {user && (user.role === 'guide' || user.role === 'artisan') && (
+              <div className="pb-2 border-b border-white/10">
+                <button
+                  onClick={() => {
+                    setActiveTab('mon_espace' as ActiveTab);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold bg-white/10 border border-amber-400/60 text-amber-300 cursor-pointer"
+                >
+                  <UserCheck className="w-4 h-4" />
+                  <span>Mon Espace</span>
+                </button>
+              </div>
+            )}
 
             {/* Auth Mobile */}
             {user ? (
