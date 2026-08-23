@@ -484,6 +484,20 @@ app.post("/api/partner/apply", requireAuth, async (req, res) => {
     const db = await getDb();
     const applications = db.collection("partnerApplications");
 
+    // Sécurité : on refuse une nouvelle candidature si une précédente est
+    // toujours "en attente" — évite les doublons en cours d'examen. Une
+    // candidature "refusée" (rejected), elle, autorise une nouvelle tentative.
+    const existingPending = await applications.findOne({
+      userId: req.authUser!.userId,
+      status: "pending",
+    });
+    if (existingPending) {
+      return res.status(409).json({
+        error: "Vous avez déjà une candidature en cours d'examen.",
+        status: "pending",
+      });
+    }
+
     const newApplication = {
       userId: req.authUser!.userId,
       email: req.authUser!.email,
@@ -505,6 +519,41 @@ app.post("/api/partner/apply", requireAuth, async (req, res) => {
   } catch (err: any) {
     console.error("Erreur /api/partner/apply:", err);
     res.status(500).json({ error: "Erreur serveur lors de l'envoi de la candidature." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// GET /api/partner/my-application — Connaître le statut de sa dernière
+// candidature (pending / approved / rejected), ou null si aucune.
+// ----------------------------------------------------------------------
+app.get("/api/partner/my-application", requireAuth, async (req, res) => {
+  try {
+    const db = await getDb();
+    const applications = db.collection("partnerApplications");
+
+    // La plus récente candidature de cet utilisateur (s'il en a soumis
+    // plusieurs après des refus successifs, seule la dernière compte).
+    const latest = await applications.findOne(
+      { userId: req.authUser!.userId },
+      { sort: { submittedAt: -1 } }
+    );
+
+    if (!latest) {
+      return res.status(200).json({ application: null });
+    }
+
+    res.status(200).json({
+      application: {
+        id: latest._id.toString(),
+        type: latest.type,
+        status: latest.status,
+        adminNotes: latest.adminNotes || "",
+        submittedAt: latest.submittedAt,
+      },
+    });
+  } catch (err: any) {
+    console.error("Erreur /api/partner/my-application:", err);
+    res.status(500).json({ error: "Erreur serveur." });
   }
 });
 
