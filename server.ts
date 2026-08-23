@@ -6,7 +6,7 @@ import fs from "fs";
 // fonction serverless Vercel — sinon ça fait planter la fonction entière
 // (voir import() dynamique plus bas dans startServer()).
 import { GoogleGenAI } from "@google/genai";
-import { MongoClient, Db } from "mongodb";
+import { MongoClient, Db, ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
@@ -155,6 +155,19 @@ function requireAuth(req: express.Request, res: express.Response, next: express.
   }
 }
 
+/**
+ * À utiliser TOUJOURS après requireAuth (donc req.authUser est déjà rempli).
+ * Vérifie en plus que la personne connectée a bien le rôle "admin" — sinon
+ * refuse catégoriquement (403), même si le token JWT est par ailleurs
+ * parfaitement valide. C'est la vraie barrière de sécurité du site Admin.
+ */
+function requireAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
+  if (!req.authUser || req.authUser.role !== "admin") {
+    return res.status(403).json({ error: "Accès réservé aux administrateurs." });
+  }
+  next();
+}
+
 // ============================================================================
 // RESEND — Envoi d'e-mails réels (codes OTP pour le mot de passe oublié)
 // ============================================================================
@@ -192,6 +205,48 @@ async function sendOtpEmail(toEmail: string, code: string) {
     throw new Error(
       `Échec de l'envoi de l'e-mail : ${result.error.message || "erreur inconnue de Resend"}`
     );
+  }
+}
+
+/**
+ * Notifie une personne de la décision prise sur sa candidature (approuvée
+ * ou refusée). Ne bloque JAMAIS la route admin en cas d'échec d'envoi —
+ * la décision reste valable même si l'e-mail ne part pas (ex: restriction
+ * Resend sans domaine vérifié) ; l'échec est seulement journalisé.
+ */
+async function notifyApplicationDecision(
+  toEmail: string,
+  approved: boolean,
+  reason: string
+) {
+  if (!resendClient) return;
+  try {
+    const subject = approved
+      ? "Votre candidature AfroKu a été approuvée !"
+      : "Réponse à votre candidature AfroKu";
+    const html = approved
+      ? `<div style="font-family: sans-serif; max-width: 480px; margin: auto;">
+          <h2 style="color: #003580;">Félicitations !</h2>
+          <p>Votre candidature pour rejoindre le réseau AfroKu a été <b>approuvée</b>.</p>
+          <p>Connectez-vous à votre compte pour accéder à votre nouvel espace prestataire.</p>
+        </div>`
+      : `<div style="font-family: sans-serif; max-width: 480px; margin: auto;">
+          <h2 style="color: #003580;">Réponse à votre candidature</h2>
+          <p>Après examen, votre candidature n'a malheureusement pas été retenue pour le moment.</p>
+          ${reason ? `<p><b>Motif :</b> ${reason}</p>` : ""}
+          <p>Vous pouvez corriger votre dossier et soumettre une nouvelle candidature à tout moment.</p>
+        </div>`;
+    const result = await resendClient.emails.send({
+      from: "AfroKu <onboarding@resend.dev>",
+      to: toEmail,
+      subject,
+      html,
+    });
+    if (result.error) {
+      console.error("Erreur Resend (notification décision):", result.error);
+    }
+  } catch (err) {
+    console.error("Échec notifyApplicationDecision:", err);
   }
 }
 
@@ -558,6 +613,153 @@ app.get("/api/partner/my-application", requireAuth, async (req, res) => {
   } catch (err: any) {
     console.error("Erreur /api/partner/my-application:", err);
     res.status(500).json({ error: "Erreur serveur." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// GET /api/admin/applications — Liste des candidatures, filtrable par
+// statut (?status=pending). Réservé aux administrateurs.
+// ----------------------------------------------------------------------
+app.get("/api/admin/applications", requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const db = await getDb();
+    const statusFilter = typeof req.query.status === "string" ? req.query.status : null;
+    const query = statusFilter ? { status: statusFilter } : {};
+
+    const list = await db
+      .collection("partnerApplications")
+      .find(query)
+      .sort({ submittedAt: -1 })
+      .toArray();
+
+    res.status(200).json({
+      applications: list.map((a) => ({
+        id: a._id.toString(),
+        userId: a.userId,
+        email: a.email,
+        type: a.type,
+        details: a.details,
+        status: a.status,
+        adminNotes: a.adminNotes || "",
+        submittedAt: a.submittedAt,
+        reviewedAt: a.reviewedAt,
+      })),
+    });
+  } catch (err: any) {
+    console.error("Erreur /api/admin/applications:", err);
+    res.status(500).json({ error: "Erreur serveur." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// POST /api/admin/applications/:id/approve — Approuve une candidature.
+// En une seule action, met à jour :
+//   1. Le statut de la candidature (partnerApplications)
+//   2. Le rôle ET le statut d'accréditation du compte lié (users)
+// Accepte un champ optionnel "edits" pour corriger des informations avant
+// validation (ex: reformuler la bio, corriger une faute).
+// ----------------------------------------------------------------------
+app.post("/api/admin/applications/:id/approve", requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { edits } = req.body || {};
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Identifiant de candidature invalide." });
+    }
+
+    const db = await getDb();
+    const applications = db.collection("partnerApplications");
+    const application = await applications.findOne({ _id: new ObjectId(id) });
+
+    if (!application) {
+      return res.status(404).json({ error: "Candidature introuvable." });
+    }
+    if (application.status === "approved") {
+      return res.status(409).json({ error: "Cette candidature est déjà approuvée." });
+    }
+
+    // 1) Applique les corrections éventuelles de l'admin, puis marque approuvé
+    const updatedDetails = edits && typeof edits === "object"
+      ? { ...application.details, ...edits }
+      : application.details;
+
+    await applications.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          status: "approved",
+          details: updatedDetails,
+          adminNotes: "",
+          reviewedAt: new Date(),
+          reviewedBy: req.authUser!.userId,
+        },
+      }
+    );
+
+    // 2) Met à jour le compte utilisateur lié : rôle + accréditation
+    await db.collection("users").updateOne(
+      { _id: new ObjectId(application.userId) },
+      { $set: { role: application.type, accreditationStatus: "verified" } }
+    );
+
+    // 3) Notifie la personne (n'échoue jamais la requête si l'e-mail rate)
+    await notifyApplicationDecision(application.email, true, "");
+
+    res.status(200).json({ success: true, message: "Candidature approuvée avec succès." });
+  } catch (err: any) {
+    console.error("Erreur /api/admin/applications/:id/approve:", err);
+    res.status(500).json({ error: "Erreur serveur lors de l'approbation." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// POST /api/admin/applications/:id/reject — Refuse une candidature, avec
+// un motif obligatoire. Met à jour le compte lié en conséquence.
+// ----------------------------------------------------------------------
+app.post("/api/admin/applications/:id/reject", requireAuth, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason } = req.body || {};
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Identifiant de candidature invalide." });
+    }
+    if (!reason || typeof reason !== "string" || reason.trim().length < 5) {
+      return res.status(400).json({ error: "Un motif de refus (5 caractères minimum) est requis." });
+    }
+
+    const db = await getDb();
+    const applications = db.collection("partnerApplications");
+    const application = await applications.findOne({ _id: new ObjectId(id) });
+
+    if (!application) {
+      return res.status(404).json({ error: "Candidature introuvable." });
+    }
+
+    await applications.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          status: "rejected",
+          adminNotes: reason.trim(),
+          reviewedAt: new Date(),
+          reviewedBy: req.authUser!.userId,
+        },
+      }
+    );
+
+    await db.collection("users").updateOne(
+      { _id: new ObjectId(application.userId) },
+      { $set: { accreditationStatus: "rejected" } }
+    );
+
+    await notifyApplicationDecision(application.email, false, reason.trim());
+
+    res.status(200).json({ success: true, message: "Candidature refusée." });
+  } catch (err: any) {
+    console.error("Erreur /api/admin/applications/:id/reject:", err);
+    res.status(500).json({ error: "Erreur serveur lors du refus." });
   }
 });
 
