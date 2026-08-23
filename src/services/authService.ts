@@ -84,6 +84,27 @@ export async function confirmPasswordReset(
  * connecté) — envoyé dans l'en-tête Authorization, vérifié par le
  * middleware requireAuth côté serveur.
  */
+export interface PartnerApplicationStatus {
+  id: string;
+  type: 'guide' | 'artisan';
+  status: 'pending' | 'approved' | 'rejected';
+  adminNotes: string;
+  submittedAt: string;
+}
+
+/**
+ * Récupère la dernière candidature de l'utilisateur connecté, s'il en a
+ * une (pending / approved / rejected), ou null s'il n'a jamais postulé.
+ */
+export async function getMyPartnerApplication(
+  token: string
+): Promise<{ application: PartnerApplicationStatus | null }> {
+  const response = await fetch('/api/partner/my-application', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return parseOrThrow(response);
+}
+
 export async function submitPartnerApplication(
   token: string,
   type: 'guide' | 'artisan',
