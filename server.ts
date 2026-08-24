@@ -533,6 +533,16 @@ app.post("/api/partner/apply", requireAuth, async (req, res) => {
   try {
     const { type, details } = req.body || {};
 
+    // Sécurité (règle métier) : seul un compte "tourist" peut candidater.
+    // Un Guide ou Artisan déjà validé ne peut ni re-postuler pour son rôle
+    // actuel, ni basculer vers l'autre rôle depuis ce même compte — il doit
+    // créer un nouveau compte Touriste pour changer de métier.
+    if (req.authUser!.role !== "tourist") {
+      return res.status(403).json({
+        error: "Votre compte est déjà associé à un rôle prestataire. Pour candidater à un autre métier, créez un nouveau compte Touriste.",
+      });
+    }
+
     if (type !== "guide" && type !== "artisan") {
       return res.status(400).json({ error: "Type de candidature invalide." });
     }
