@@ -17,7 +17,7 @@
  * ============================================================================
  */
 
-export type ActiveTab = 'accueil' | 'explorer' | 'guides' | 'artisans' | 'reservations' | 'admin';
+export type ActiveTab = 'accueil' | 'explorer' | 'guides' | 'artisans' | 'reservations' | 'admin' | 'mon_espace';
 
 export type ModalType = 'auth_signup' | 'auth_login' | 'add_property' | 'currency' | 'partner_register' | 'pending_approval' | 'forgot_password' | null;
 
