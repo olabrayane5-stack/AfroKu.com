@@ -14,6 +14,7 @@ import { GuidesView } from './components/Views/GuidesView';
 import { ArtisansView } from './components/Views/ArtisansView';
 import { ReservationsView } from './components/Views/ReservationsView';
 import { AdminDashboardView } from './components/Views/AdminDashboardView';
+import { MonEspaceView } from './components/Views/MonEspaceView';
 import { AiAssistant } from './components/AiAssistant';
 import { AuthModal } from './components/Modals/AuthModal';
 import { AddPropertyModal } from './components/Modals/AddPropertyModal';
@@ -123,6 +124,7 @@ function MainAppContent() {
           {activeTab === 'artisans' && <ArtisansView />}
           {activeTab === 'reservations' && <ReservationsView onNavigate={handleTabChange} />}
           {activeTab === 'admin' && <AdminDashboardView />}
+          {activeTab === 'mon_espace' && <MonEspaceView />}
         </main>
 
         {/* Footer */}
