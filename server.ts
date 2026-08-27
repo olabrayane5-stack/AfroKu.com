@@ -10,12 +10,40 @@ import { MongoClient, Db, ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
+import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
+
+// ============================================================================
+// CORS — Autorise le site Admin (domaine séparé) à appeler cette API.
+// ============================================================================
+// Par défaut, un navigateur BLOQUE toute requête faite depuis un autre
+// domaine (politique "same-origin"). Le site principal (afro-ku-com.vercel.app)
+// n'a jamais eu besoin de CORS car il appelle sa propre API en relatif
+// ("/api/..."). Le site Admin, lui, est un projet à part (afroku-admin.vercel.app)
+// — sans cette configuration, ses appels à /api/auth/login, /api/admin/...
+// échoueraient tous silencieusement, bloqués par le navigateur.
+const ALLOWED_ORIGINS = [
+  "https://afroku-admin.vercel.app", // Site Admin en production
+  "http://localhost:5174",           // Site Admin en développement local
+];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // "origin" est absent pour les requêtes non-navigateur (ex: curl, Postman,
+      // ou nos propres tests serveur-à-serveur) — on les laisse passer.
+      if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Origine non autorisée par la politique CORS."));
+      }
+    },
+  })
+);
 
 // Security: Limit JSON payload size to prevent DoS attacks via memory
 // exhaustion. Relevé à 15mb (au lieu de 10kb) pour permettre l'envoi des
