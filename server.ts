@@ -28,8 +28,10 @@ const PORT = 3000;
 // — sans cette configuration, ses appels à /api/auth/login, /api/admin/...
 // échoueraient tous silencieusement, bloqués par le navigateur.
 const ALLOWED_ORIGINS = [
+  "https://afro-ku-com.vercel.app", // Site principal (appelle sa propre API — oubli corrigé)
   "https://afroku-admin.vercel.app", // Site Admin en production
   "http://localhost:5174",           // Site Admin en développement local
+  "http://localhost:3000",           // Site principal en développement local
 ];
 app.use(
   cors({
@@ -1588,6 +1590,25 @@ async function startServer() {
     console.log(`Serveur AfroKu.com démarré sur http://localhost:${PORT} et http://127.0.0.1:${PORT}`);
   });
 }
+
+// ============================================================================
+// GESTIONNAIRE D'ERREUR GLOBAL — toujours en dernier, après toutes les routes.
+// ============================================================================
+// Sans ce middleware, TOUTE erreur non prévue (comme le rejet CORS qu'on
+// vient de corriger, ou n'importe quel bug futur) tombe sur la page d'erreur
+// HTML par défaut d'Express — provoquant côté frontend une erreur du genre
+// "Unexpected token '<', <!DOCTYPE..." au lieu d'un vrai message JSON
+// exploitable. Ce filet de sécurité garantit une réponse JSON cohérente,
+// quelle que soit l'erreur survenue.
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error("Erreur non gérée:", err?.message || err);
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(err?.status || 500).json({
+    error: err?.message || "Erreur serveur inattendue.",
+  });
+});
 
 export default app;
 
