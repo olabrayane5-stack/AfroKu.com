@@ -71,6 +71,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFileName, setPhotoFileName] = useState<string>('');
   const [cvFileName, setCvFileName] = useState<string>('');
+  const [cvPreview, setCvPreview] = useState<string | null>(null);
   const [cvFileSize, setCvFileSize] = useState<string>('');
 
   // Photo de la pièce d'identité (le type et le numéro existent déjà :
@@ -136,8 +137,12 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setError('La photo ne doit pas dépasser 5 Mo.');
+      // Limite réduite à 700 Ko (au lieu de 5 Mo) : Vercel impose une limite
+      // ABSOLUE de 4,5 Mo sur toute requête envoyée à une fonction serverless,
+      // impossible à changer depuis notre code. Avec 3 fichiers à envoyer en
+      // même temps (photo + pièce d'identité + CV), chacun doit rester petit.
+      if (file.size > 700 * 1024) {
+        setError('La photo ne doit pas dépasser 700 Ko.');
         return;
       }
       setPhotoFileName(file.name);
@@ -157,8 +162,11 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   const handleDocumentUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setError('Le document ne doit pas dépasser 5 Mo.');
+      // Limite réduite à 1,5 Mo (au lieu de 5 Mo) — même raison que la photo
+      // de profil. La pièce d'identité garde la limite la plus haute des 3,
+      // car elle doit rester lisible pour la vérification par l'admin.
+      if (file.size > 1.5 * 1024 * 1024) {
+        setError('Le document ne doit pas dépasser 1,5 Mo.');
         return;
       }
       setDocumentFileName(file.name);
@@ -178,19 +186,33 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
   const handleCvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        setError('Le CV ne doit pas dépasser 10 Mo.');
+      // Limite réduite à 1 Mo (au lieu de 10 Mo) — même raison. Un CV/
+      // portfolio en PDF texte tient très largement dans 1 Mo ; s'il
+      // contient beaucoup d'images, conseiller à l'utilisateur de le
+      // compresser avant envoi.
+      if (file.size > 1 * 1024 * 1024) {
+        setError('Le CV ne doit pas dépasser 1 Mo.');
         return;
       }
       setCvFileName(file.name);
       const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
       setCvFileSize(`${sizeInMB} Mo`);
+      // Bug corrigé : auparavant, seul le NOM du fichier était retenu — son
+      // contenu n'était jamais lu, donc jamais réellement transmis au
+      // serveur. On lit maintenant le fichier en base64, comme pour la
+      // photo de profil et la pièce d'identité.
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCvPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleRemoveCv = () => {
     setCvFileName('');
     setCvFileSize('');
+    setCvPreview(null);
   };
 
   // L'e-mail du formulaire suit toujours celui du compte connecté — jamais
@@ -274,6 +296,8 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
       department,
       photoUrl: photoPreview || defaultPhoto,
       bio: bio.trim(),
+      cvFileName: cvFileName || '',
+      cvUrl: cvPreview || '',
       ...(partnerType === 'guide'
         ? {
             languages: languages.split(',').map((l) => l.trim()).filter(Boolean),
@@ -566,7 +590,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                       ) : (
                         <label className="flex items-center justify-center gap-2 p-3.5 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 cursor-pointer hover:border-[#002866] hover:bg-slate-50 transition-colors">
                           <Upload className="w-4 h-4 text-slate-500" />
-                          <span className="text-xs font-bold text-slate-600">Importer une photo lisible (JPG, PNG — 5 Mo max)</span>
+                          <span className="text-xs font-bold text-slate-600">Importer une photo lisible (JPG, PNG — 1,5 Mo max)</span>
                           <input type="file" accept="image/*" onChange={handleDocumentUpload} className="hidden" />
                         </label>
                       )}
@@ -683,7 +707,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                         <label className="border-2 border-dashed border-slate-200 hover:border-[#002866] bg-slate-50 hover:bg-blue-50/30 rounded-xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all">
                           <Upload className="w-5 h-5 text-slate-400 mb-1" />
                           <span className="text-xs font-bold text-[#002866]">Charger une photo</span>
-                          <span className="text-[10px] text-slate-400">JPG, PNG (max 5 Mo)</span>
+                          <span className="text-[10px] text-slate-400">JPG, PNG (max 700 Ko)</span>
                           <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
                         </label>
                       )}
@@ -713,7 +737,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                         <label className="border-2 border-dashed border-slate-200 hover:border-[#002866] bg-slate-50 hover:bg-blue-50/30 rounded-xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all">
                           <FileText className="w-5 h-5 text-slate-400 mb-1" />
                           <span className="text-xs font-bold text-[#002866]">Joindre un CV</span>
-                          <span className="text-[10px] text-slate-400">PDF, Word (max 10 Mo)</span>
+                          <span className="text-[10px] text-slate-400">PDF, Word (max 1 Mo)</span>
                           <input type="file" accept=".pdf,.doc,.docx" onChange={handleCvUpload} className="hidden" />
                         </label>
                       )}
