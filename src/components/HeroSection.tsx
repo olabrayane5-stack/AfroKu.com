@@ -243,10 +243,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch, onExploreCli
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex-1 flex flex-col items-center w-full">
         {/* Prestige Welcome Badge */}
-        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-50/95 dark:bg-blue-950/80 backdrop-blur-md border border-blue-200/80 dark:border-blue-700/60 text-[#1D4ED8] dark:text-blue-300 text-xs sm:text-sm font-black tracking-wider uppercase mb-6 shadow-xs">
-          <Sparkles className="w-4 h-4 text-blue-600 dark:text-amber-400 animate-pulse" />
-          <span>BIENVENUE SUR AFROKU • LA RÉFÉRENCE TOURISME & CULTURE AU BÉNIN</span>
-        </div>
+        
 
         {/* Headline matching image typography and colors */}
         <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-slate-950 dark:text-white leading-[1.08] mb-6 max-w-6xl">
