@@ -85,7 +85,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="space-y-3 max-w-3xl mx-auto mb-8 sm:mb-10">
           <span className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-900 border border-amber-400/40 shadow-xs backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            L'Écosystème AfroKu
+            
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 font-serif tracking-tight">
             Les 3 Piliers de la Plateforme
@@ -270,7 +270,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full border border-amber-300 inline-flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5 text-amber-600" />
-              Les 12 Départements du Bénin
+              
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2 font-serif">
               Explorez le Bénin par Département
@@ -388,7 +388,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
-                Le réseau des meilleurs guides locaux
+               
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
                 Guides passionnés & natifs du Bénin
@@ -565,7 +565,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100 px-2.5 py-1 rounded-full border border-amber-200">
-                Galerie Royale & Boutique
+                
               </span>
               <h3 className="text-xl font-bold text-slate-900 font-serif mt-1">
                 Créations & Œuvres d'Artisans
@@ -656,7 +656,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300 inline-flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5 text-emerald-700" />
-                Agenda Culturel & Festivalier
+                
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
                 Événements à ne pas manquer
@@ -971,7 +971,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-amber-900 bg-amber-100 px-3 py-1 rounded-full border border-amber-300 inline-flex items-center gap-1.5">
               <Eye className="w-3.5 h-3.5 text-amber-600" />
-              Immersion Visuelle & Photographies
+              
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2 font-serif">
               Le Bénin en Images Haute Définition
