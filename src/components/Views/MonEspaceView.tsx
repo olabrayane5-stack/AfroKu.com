@@ -68,7 +68,7 @@ export const MonEspaceView: React.FC = () => {
 
       {/* Bandeau d'information : fonctionnalités à venir */}
       <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-start gap-3">
-        <Sparkles className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+        
         <p className="text-xs text-blue-900 leading-relaxed">
           Votre espace personnel est en cours d'enrichissement. Les fonctionnalités ci-dessous
           seront activées progressivement — votre compte est déjà prêt à les recevoir.
