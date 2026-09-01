@@ -609,21 +609,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
-                        Pays *
-                      </label>
-                      <select
-                        value={country}
-                        onChange={(e) => handleCountryChange(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#002866] bg-slate-50/50 text-xs font-semibold text-slate-900"
-                      >
-                        {COUNTRIES_LIST.map((c) => (
-                          <option key={c.code} value={c.name}>
-                            {c.flag} {c.name}
-                          </option>
-                        ))}
-                      </select>
+                    <option value="Bénin">🇧🇯 Bénin</option>
                     </div>
 
                     <div>
