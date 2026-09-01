@@ -598,23 +598,6 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
                         Sert uniquement à la vérification par notre équipe — jamais publiée sur votre profil public.
                       </p>
                     </div>
-
-                    <div className="sm:col-span-2">
-                      <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
-                        Numéro Mobile Money (MTN / Moov / Celtiis) *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="+229 01 00 00 00 00"
-                        value={mobileMoneyNumber}
-                        onChange={(e) => setMobileMoneyNumber(e.target.value)}
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#002866] bg-slate-50/50 text-xs font-medium text-slate-900"
-                      />
-                      <p className="text-[10px] text-slate-400 mt-1">
-                        Numéro sur lequel vous recevrez vos paiements de réservations.
-                      </p>
-                    </div>
                   </div>
                 </div>
 
