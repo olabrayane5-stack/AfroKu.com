@@ -672,7 +672,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 location: 'Ouidah, Bénin',
                 organizer: 'Ministère du Tourisme',
                 desc: 'Célébration culturelle et spirituelle du Vodoun au Bénin.',
-                price: '5 000 XOF',
+                price: 'Gratuit',
                 image: vodunDaysImg
               },
               {
@@ -683,7 +683,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 location: 'Kouandé & Porto-Novo',
                 organizer: 'Ministère de la Culture',
                 desc: 'Danses traditionnelles et masques sacrés.',
-                price: '3 000 XOF',
+                price: 'Gratuit',
                 image: festivalMasquesImg
               },
               {
@@ -694,7 +694,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 location: 'Dassa-Zoumè & Nikki',
                 organizer: 'Cour Royale de Nikki',
                 desc: 'Parades équestres et grande fête princière du Royaume de Nikki.',
-                price: '3 000 XOF',
+                price: 'Gratuit',
                 image: feteGaaniImg
               },
               {
@@ -703,7 +703,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: '9 - 11 Janvier 2026',
                 location: 'Ouidah',
                 desc: 'Tambours sacrés, rythmes ancestraux et spiritualité au cœur du Vodou.',
-                price: '5 000 XOF',
+                price: 'Gratuit',
                 image: festivalVodouMusicImg
               },
               {
@@ -712,7 +712,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Juillet 2026',
                 location: 'Cotonou',
                 desc: 'Exposition-vente d\'artisanat d\'art, poteries et créations locales.',
-                price: '2 000 XOF',
+                price: 'Gratuit',
                 image: siabCraftImg
               },
               {
@@ -721,7 +721,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: '15 - 18 Février 2026',
                 location: 'Kétou & Sakété',
                 desc: 'Hommage aux mères et esprits sacrés par le masque Guèlèdè.',
-                price: '4 000 XOF',
+                price: 'Gratuit',
                 image: gueledeMaskImg
               },
               {
@@ -730,7 +730,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Août 2026',
                 location: 'Cotonou',
                 desc: 'Grand concert des musiques actuelles, afrobeat et hip-hop.',
-                price: '5 000 XOF',
+                price: 'Gratuit',
                 image: weloveyaConcertImg
               },
               {
@@ -739,7 +739,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Mars 2026',
                 location: 'Cotonou & Parakou',
                 desc: 'Rencontre majeure des arts scéniques et dramaturges d\'Afrique.',
-                price: '3 000 XOF',
+                price: 'Gratuit',
                 image: fithebTheaterImg
               },
               {
@@ -748,7 +748,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Janvier 2026',
                 location: 'Ouidah',
                 desc: 'Expositions d\'art contemporain, sculpteurs et mémoire Vodun.',
-                price: '5 000 XOF',
+                price: 'Gratuit',
                 image: artsVodunImg
               },
               {
@@ -766,7 +766,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Avril 2026',
                 location: 'Abomey',
                 desc: 'Hommage aux dynasties et Palais Royaux du Royaume du Danxomé.',
-                price: '3 500 XOF',
+                price: 'Gratuit',
                 image: abomeyRoyalImg
               },
               {
@@ -775,7 +775,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Novembre 2026',
                 location: 'Cotonou',
                 desc: 'Biennale de création visuelle, peintures et photographies.',
-                price: '2 500 XOF',
+                price: 'Gratuit',
                 image: novArtImg
               },
               {
@@ -784,7 +784,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Décembre 2026',
                 location: 'Cotonou & Ouidah',
                 desc: 'Parades costumées, défilés masqués et héritage afro-brésilien.',
-                price: '2 000 XOF',
+                price: 'Gratuit',
                 image: kaletaCarnivalImg
               },
               {
@@ -793,7 +793,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Décembre 2026',
                 location: 'Cotonou',
                 desc: 'Grande scène festive célébrant la musique live et les talents béninois.',
-                price: '5 000 XOF',
+                price: 'Gratuit',
                 image: eyaConcertImg
               },
               {
@@ -802,7 +802,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Février 2026',
                 location: 'Ouidah',
                 desc: 'Projections de films, documentaires et fictions panafricaines.',
-                price: '2 500 XOF',
+                price: 'Gratuit',
                 image: ouidahFilmImg
               },
               {
@@ -811,7 +811,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Mai 2026',
                 location: 'Allada',
                 desc: 'Valorisation des rites sacrés, pharmacopée et savoirs ancestraux.',
-                price: '3 000 XOF',
+                price: 'Gratuit',
                 image: endogenousCulturesImg
               },
               {
@@ -820,7 +820,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Octobre 2026',
                 location: 'Parakou',
                 desc: 'Promotion du textile tissé Kanvo, vannerie et sculpture sur bois.',
-                price: '1 500 XOF',
+                price: 'Gratuit',
                 image: craftsKanvoImg
               },
               {
@@ -829,7 +829,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Août 2026',
                 location: 'Ganvié (Lac Nokoué)',
                 desc: 'Courses de pirogues traditionnelles et festivités sur la cité lacustre.',
-                price: '4 000 XOF',
+                price: 'Gratuit',
                 image: festivalGanvieImg
               },
               {
@@ -838,7 +838,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Mai 2026',
                 location: 'Parc de la Pendjari',
                 desc: 'Safari guidé, sensibilisation à la faune sauvage et tourisme vert.',
-                price: '4 000 XOF',
+                price: 'Gratuit',
                 image: pendjariSafariImg
               },
               {
@@ -847,7 +847,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 date: 'Septembre 2026',
                 location: 'Porto-Novo',
                 desc: 'Visites guidées des musées, bâtisses afro-brésiliennes et conférences.',
-                price: '2 000 XOF',
+                price: 'Gratuit',
                 image: heritageMuseumImg
               },
             ].slice(0, showAllEvents ? 20 : 6).map((item, idx) => (
