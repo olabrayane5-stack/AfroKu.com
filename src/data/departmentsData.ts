@@ -7,7 +7,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Kandi',
     region: 'Nord',
     description: 'Le plus grand département du Bénin, terre de savanes, du Fleuve Niger, de réserves cynegétiques et du Parc National W.',
-    image: 'https://www.bing.com/images/search?view=detailV2&ccid=bVoNasTB&id=698C266FB70269316EC3FD062C14F5AE6707CDDE&thid=OIP.bVoNasTBd7wu-LQ5syTfwgHaE_&mediaurl=https%3A%2F%2Fgifex.com%2Ffr%2Fwp-content%2Fuploads%2F2342%2FCarte-du-departement-de-l-Alibori.jpg&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.6d5a0d6ac4c177bc2ef8b439b324dfc2%3Frik%3D3s0HZ671FCwG%252fQ%26pid%3DImgRaw%26r%3D0&exph=2362&expw=3505&q=D%C3%A9partement+Alibori+Carte&ck=621DB1E81085C0D86C953CE8E48092E0&selectedIndex=1&itb=0&cw=1375&ch=659&ajaxhist=0&ajaxserp=0&shtc=0&shth=OIP.bVoNasTBd7wu-LQ5syTfwgHaE_&shsc=idp&form=EX0050&shid=affd752c-5314-4238-bf19-4ab52e2cf642&shtp=GetUrl&shtk=Q2FydGUgZHUgZMOpcGFydGVtZW50IGRlIGwnQWxpYm9yaQ%3D%3D&shdk=VHJvdXbDqWUgc3VyIEJpbmcgc3VyIGdpZmV4LmNvbQ%3D%3D&shhk=HetxK75fhTpjyoz5BI7cu1X31Fc63QFK7MnpAJ5m%2F9g%3D',
+    image: 'https://thumbs.dreamstime.com/b/alibori-red-highlighted-map-benin-189062561.jpg',
     sites: [
       {
         id: 'ali-1',
