@@ -610,7 +610,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <option value="Bénin">🇧🇯 Bénin</option>
-                    </div>
+                    
 
                     <div>
                       <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
