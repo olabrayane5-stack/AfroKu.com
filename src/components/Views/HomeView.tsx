@@ -908,7 +908,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     className="w-full py-2.5 bg-[#003580] hover:bg-[#00255c] text-white text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <Ticket className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Plus d'infos</span>
+                    <span>Réserver un ticket</span>
                   </button>
                 </div>
               </div>
