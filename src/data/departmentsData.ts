@@ -31,7 +31,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Plage & Eau',
         description: 'Frontière naturelle avec le Niger, marché transfrontalier vibrant et balades en pirogue sur le fleuve.',
         location: 'Malanville',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70',
+        image: 'https://thumbs.dreamstime.com/b/beautiful-view-black-river-adjarra-benin-316546375.jpg',
       },
       {
         id: 'ali-4',
@@ -39,7 +39,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Capitale administrative du département, carrefour culturel et historique de la dynastie des Rois de Kandi.',
         location: 'Kandi',
-        image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=70',
+        image: 'https://i.pinimg.com/originals/4b/08/a5/4b08a5d1300d31d336424f7735068602.jpg',
       },
       {
         id: 'ali-5',
@@ -47,7 +47,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Afluent du Niger abritant hippopotames, crocodiles et une grande diversité d\'oiseaux migrateurs.',
         location: 'Banikoara / Karimama',
-        image: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://i.pinimg.com/originals/4b/08/a5/4b08a5d1300d31d336424f7735068602.jpg',
       },
       {
         id: 'ali-6',
@@ -55,7 +55,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Réserve transfrontalière UNESCO abritant éléphants, gazelles, lions et buffles dans un écosystème préservé.',
         location: 'Karimama / Malanville',
-        image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=600&q=70',
+        image: 'https://africageographic.com/wp-content/uploads/2021/01/BREEDI1.jpg',
       },
     ],
   },
@@ -73,7 +73,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'Architecture traditionnelle unique au monde : habitations fortifiées à étage construites en terre et paille.',
         location: 'Boukoumbé',
-        image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=600&q=70',
+        image: 'https://waafrica.travel/wp-content/uploads/2026/03/un-tata-peuple-somba-avec-ses-tourelles-au-toit-chaume-son-toit-plat-1024x768.jpg',
       },
       {
         id: 'ata-2',
@@ -81,7 +81,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Chutes d\'eau naturelles nichées au cœur d\'une forêt sacrée touffue, lieu idéal de baignade rafraîchissante.',
         location: 'Natitingou (20 km)',
-        image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=600&q=70',
+        image: 'https://kirrasworld.com/wp-content/uploads/2022/07/20220129_120731.jpg',
       },
       {
         id: 'ata-3',
@@ -89,7 +89,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Bassins naturels limpides au pied de la chaîne de l\'Atacora, tout près de l\'entrée de la Pendjari.',
         location: 'Tanguiéta',
-        image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=70',
+        image: 'https://benin-e-visa.com/images/Benin-Tanguieta.jpg',
       },
       {
         id: 'ata-4',
@@ -97,7 +97,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Relief montagneux le plus élevé du Bénin, terrain privilégié pour la randonnée et le trekking.',
         location: 'Natitingou',
-        image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://expresstourisme.com/image/hotel/chaine-atacora-1-61aa51d2bdcd2.jpg',
       },
       {
         id: 'ata-5',
@@ -105,7 +105,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Ancien bâtiment colonial présentant les civilisations Otammari, Waama, Peulh et Dendi.',
         location: 'Natitingou',
-        image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=70',
+        image: 'https://visitbeninrepublic.com/wp-content/uploads/2025/03/Natitingou-City-and-Museum-Tour-1.png',
       },
       {
         id: 'ata-6',
@@ -113,7 +113,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Joyau de la biodiversité ouest-africaine : observation privilégiée des lions, grands éléphants et léopards.',
         location: 'Tanguiéta / Batia',
-        image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=600&q=70',
+        image: 'https://media.gettyimages.com/id/492759611/fr/photo/benin-lions-felidae-pendjari-national-park-benin.jpg?s=612x612&w=gi&k=20&c=c8TDw_Y1Yao_gKoG6YbB_btnmBn7J_NBeK0HDioK-F4=',
       },
     ],
   },
@@ -131,7 +131,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Capitale historique du royaume d\'Adja-Tado et berceau de la lignée du grand héros haïtien Toussaint Louverture.',
         location: 'Allada',
-        image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=600&q=70',
+        image: 'https://rootstoglory.com/wp-content/uploads/2020/05/ToussaintLouverture2.jpg',
       },
       {
         id: 'atl-2',
@@ -139,7 +139,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Sanctuaire végétal hébergeant des arbres centenaires sacrés et des statues divines monumentales.',
         location: 'Ouidah',
-        image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://c8.alamy.com/comp/E73EAE/africa-benin-ouidah-gateway-entrance-to-kpasse-sacred-forest-with-E73EAE.jpg',
       },
       {
         id: 'atl-3',
@@ -147,7 +147,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'La Venise d\'Afrique : plus de 30 000 habitants vivant dans des maisons sur pilotis et se déplaçant en pirogues.',
         location: 'Sô-Ava',
-        image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=600&q=70',
+        image: 'https://as2.ftcdn.net/v2/jpg/01/23/15/41/1000_F_123154168_TZQerI0I388XxozqbAAj6SyHlzKyjAb2.jpg',
       },
       {
         id: 'atl-4',
@@ -155,7 +155,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Ancien fort militaire abritant les reliques de la traite négrière et les liens historiques Bénin-Brésil.',
         location: 'Ouidah',
-        image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.cipdh.gob.ar/memorias-situadas/wp-content/uploads/2019/02/Sin-t%C3%ADtulo-1.jpg',
       },
       {
         id: 'atl-5',
@@ -163,7 +163,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Monument commémoratif mondial érige au bord de l\'Océan Atlantique en hommage aux ancêtres déportés.',
         location: 'Plage de Ouidah',
-        image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=600&q=70',
+        image: 'https://travel2unlimited.com/wp-content/uploads/2018/02/321994627_935115964317060_6091901989956395159_n_10160724153213701-1030x773.jpg',
       },
       {
         id: 'atl-6',
@@ -171,7 +171,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Lieu de culte emblématique abritant des pythons royaux sacrés vénérés par la communauté traditionnelle.',
         location: 'Ouidah Centre',
-        image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=70',
+        image: 'https://c8.alamy.com/comp/GDKENT/the-sacred-temple-of-pythons-devoted-to-the-voodoo-religion-in-ouidah-GDKENT.jpg',
       },
     ],
   },
@@ -189,7 +189,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Haut lieu de résistance coloniale dirigé par le héros national Bio Guerra et berceau équestre.',
         location: 'Bembèrèkè',
-        image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=600&q=70',
+        image: 'https://expresstourisme.com/image/news/tourisme-Benin-visiter-monument-Statut-Bio-Guera-cotonou-64b4fbb9c798b.webp',
       },
       {
         id: 'bor-2',
@@ -197,7 +197,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Démonstrations équestres spectaculaires et parades traditionnelles de la royauté Bariba.',
         location: 'Nikki / N\'Dali',
-        image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=70',
+        image: 'https://lepotentiel.bj/wp-content/uploads/2026/03/545057776_815731084307281_4101444300222020846_n-1024x680.jpg',
       },
       {
         id: 'bor-3',
@@ -205,7 +205,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'Reconstitution architecturale des habitats traditionnels des ethnies du Nord Bénin (Bariba, Peulh, Fon).',
         location: 'Parakou Centre',
-        image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=70',
+        image: 'https://visitbeninrepublic.com/wp-content/uploads/2025/03/Ketou-Royal-Palace-Tour-600x600.png',
       },
       {
         id: 'bor-4',
@@ -213,7 +213,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Résidence de Sa Majesté Akpaki, gardien du trône traditionnel de Parakou.',
         location: 'Parakou',
-        image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70',
+        image: 'https://media02.stockfood.com/largepreviews/MjE3NjAyODcyNQ==/70194475-Royal-Palace-Benin.jpg',
       },
       {
         id: 'bor-5',
@@ -221,7 +221,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Capitale politique et spirituelle du royaume de Nikki, centre névralgique de la culture Bariba.',
         location: 'Nikki',
-        image: 'https://images.unsplash.com/photo-1606744888344-493238951221?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.lameteo.info/wp-content/uploads/2025/07/1000075830-1024x576.jpg',
       },
     ],
   },
@@ -239,7 +239,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Panorama spectaculaire de dômes granitiques géants s\'étendant à perte de vue autour de Dassa-Zoumè.',
         location: 'Dassa-Zoumè',
-        image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.gouv.bj/upload/images/articles/0055566001605990575.jpeg',
       },
       {
         id: 'col-2',
@@ -247,7 +247,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'Haut lieu de pèlerinage catholique africain où la Vierge Marie est vénérée au pied d\'une falaise rocheuse.',
         location: 'Dassa-Zoumè',
-        image: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=600&q=70',
+        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/20/c1/56/f4/dassa-zoume-grotte-d.jpg?w=1400&h=800&s=1',
       },
       {
         id: 'col-3',
@@ -255,7 +255,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Formations géologiques emblématiques surplombant la ville de Savè et chargées de légendes ancestrales.',
         location: 'Savè',
-        image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.afrik.com/wp-content/uploads/2024/08/save-3-696x392.jpg',
       },
       {
         id: 'col-4',
@@ -263,7 +263,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Royaume Mahi célèbre pour sa fête annuelle de l\'Igname et ses prêtres vaudou respectés.',
         location: 'Savalou',
-        image: 'https://images.unsplash.com/photo-1606744888344-493238951221?auto=format&fit=crop&w=600&q=70',
+        image: https://c8.alamy.com/comp/F2N3HB/benin-west-africa-savalou-royal-palace-sponsored-by-muammar-gaddafi-F2N3HB.jpg',
       },
       {
         id: 'col-5',
@@ -271,7 +271,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Réserve de biodiversité riche en faune sauvage et traditions de médecine des plantes.',
         location: 'Bantè',
-        image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://img9.digsty.com/wA7yhkrXi6DSukepc441gKnNDmDiWJunIned0vV_fmw/rs:fit:3840:3840:1/g:fp:0.5:0.5/czM6Ly9hcm91bmR1cy82Mi8xNzYyMjk2ODYtNmM5MWFlM2QuNzgxMDQ0LWZvMTAw.jpg',
       },
     ],
   },
@@ -289,7 +289,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Artisanat',
         description: 'L\'un des plus vivants marchés d\'Afrique de l\'Ouest pour les tissus, les épices et les objets rituels.',
         location: 'Azovè (Aplahoué)',
-        image: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.gouv.bj/upload/images/banners/054370826402001723716260.jpg',
       },
       {
         id: 'cou-2',
@@ -297,7 +297,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Artisanat',
         description: 'Chef-lieu réputé pour la fabrication de nattes tissées, de paniers en osier et de sculptures sur bois.',
         location: 'Dogbo',
-        image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.swisscontact.org/_Resources/Persistent/8/b/4/e/8b4eee74e0f604407374919ac060a7a054ffaef5/B%C3%A9nin_FoRCE_JAB%2010-1800x1200.jpg',
       },
       {
         id: 'cou-3',
@@ -305,7 +305,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Rivière et résurgences d\'eaux naturelles au milieu de la végétation tropicale.',
         location: 'Djakotomey',
-        image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=600&q=70',
+        image: 'https://ak-d.tripcdn.com/images/0HJ6n12000h9y9eymD991_C_880_350_R5.jpg',
       },
       {
         id: 'cou-4',
@@ -313,7 +313,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Forêt préservée abritant les autels sacrés du culte Adja et les divinités protectrices de la région.',
         location: 'Klamou',
-        image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://media.nbcchicago.com/2023/10/GettyImages-504321558.jpg?quality=85&strip=all&resize=1200%2C675',
       },
       {
         id: 'cou-5',
@@ -321,7 +321,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Plage & Eau',
         description: 'Promenades tranquilles en pirogue et découverte de la pêche traditionnelle au filet.',
         location: 'Lalo',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.globaltimes.cn/Portals/0/attachment/2023/2023-08-27/f0dfb0c3-b128-4481-835a-22c394588baf.jpeg',
       },
     ],
   },
@@ -339,7 +339,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Forêt dense abritant des espèces de primates rares, d\'oiseaux et une flore médicinale réputée.',
         location: 'Bassila',
-        image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.ecobenin.org/wp-content/uploads/2015/08/jpg_singe_mona_kpetou_benin_2_.jpg',
       },
       {
         id: 'don-2',
@@ -347,7 +347,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Ville historique, carrefour des routes caravanières anciennes de la noix de cola et de l\'or.',
         location: 'Djougou',
-        image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=70',
+        image: 'https://media.routard.com/image/06/5/pt123496.1332065.w430.jpg',
       },
       {
         id: 'don-3',
@@ -355,7 +355,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Vaste domaine forestier protégé géré par les communautés locales en écotourisme.',
         location: 'Penessoulou',
-        image: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.allibert-trekking.ca/web_uploads/Commentaire/d0/N_elodie_m-benin-voyage-organise-benin.jpg',
       },
       {
         id: 'don-4',
@@ -363,7 +363,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'Villages perchés sur les sommets rocheux, célèbres pour leurs chefs spirituels aux calumets et initiations.',
         location: 'Copargo / Tanéka',
-        image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://africanlanders.com/wp-content/uploads/2023/12/1690369832469.jpg',
       },
       {
         id: 'don-5',
@@ -371,7 +371,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Paysage volcanique ancien avec cours d\'eau cristallins et sentiers de découverte.',
         location: 'Ouaké',
-        image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=600&q=70',
+        image: 'https://mobile-img.lpcdn.ca/v2/924x/a4265cb93b9d36348d1ab3608fbd3b34.jpg',
       },
     ],
   },
@@ -389,7 +389,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'Édifice religieux emblématique aux bandes dessinées rouge et blanc en bordure de lagune.',
         location: 'Cotonou Ganhi',
-        image: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=600&q=70',
+        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1f/80/2c/58/bien-of-nave-and-front.jpg?w=1200&h=1200&s=1',
       },
       {
         id: 'lit-2',
@@ -397,7 +397,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Artisanat',
         description: 'Espace d\'exposition d\'art moderne africain de renommée internationale et bibliothèque gratuite.',
         location: 'Cotonou Haie Vive',
-        image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.directtriphub.com/static/images/places/110/fondation-zinsou-cotonou/main.jpg',
       },
       {
         id: 'lit-3',
@@ -405,7 +405,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Artisanat',
         description: '20 hectares de commerce bouillonnant au bord de la lagune : tissus wax, épices, artisanat et bijoux.',
         location: 'Cotonou Dantokpa',
-        image: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=600&q=70',
+        image: 'https://beninwebtv.bj/wp-content/uploads/2024/04/Marche-dantokpa-@-Etoile-Africaine-1024x508.jpg',
       },
       {
         id: 'lit-4',
@@ -413,7 +413,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Statue en bronze de 30 mètres de haut érigée en hommage aux guerrières Amazones du Dahomey.',
         location: 'Esplanade des Amazones, Cotonou',
-        image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70',
+        image: 'https://theirsondiary.com/wp-content/uploads/2024/02/img_4388-1.jpg',
       },
       {
         id: 'lit-5',
@@ -421,7 +421,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Monument circulaire central érigé pendant l\'époque révolutionnaire béninoise.',
         location: 'Cotonou St-Michel',
-        image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=600&q=70',
+        image: 'https://oukoikan.com/wp-content/uploads/2024/04/maxresdefault-2.jpg',
       },
       {
         id: 'lit-6',
@@ -429,7 +429,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Plage & Eau',
         description: 'Promenade maritime aménagée, paillottes, cocotiers et couchers de soleil sur l\'Océan Atlantique.',
         location: 'Fidjrossè, Cotonou',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70',
+        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/01/ec/27/31/am-strand.jpg?w=1200&h=1200&s=1',
       },
     ],
   },
@@ -447,7 +447,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Plage & Eau',
         description: 'Réserve de biosphère où les eaux douces du fleuve se mélangent aux vagues salées de l\'Océan Atlantique.',
         location: 'Grand-Popo',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=70',
+        image: 'https://pbs.twimg.com/media/HEAFKrgaoAAt5BO.jpg',
       },
       {
         id: 'mon-2',
@@ -455,7 +455,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Plage & Eau',
         description: 'Station balnéaire historique, auberges sous les palmiers, pêcheurs en pirogues et ambiance décontractée.',
         location: 'Grand-Popo',
-        image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=600&q=70',
+        image: 'https://africanlanders.com/wp-content/uploads/2023/12/1690365738743.jpg',
       },
       {
         id: 'mon-3',
@@ -463,7 +463,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Lac paisible réputé pour ses légendes d\'eau, ses thermes minéraux et sa pêche à la nasse.',
         location: 'Possotomè',
-        image: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.ecobenin.org/wp-content/uploads/Possotome_cocotier_plage_chez_prefet_pilotis_lac_aheme_ecotourisme_ecobenin_benin.jpg',
       },
       {
         id: 'mon-4',
@@ -471,7 +471,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Chef-lieu du département riche en sanctuaires vaudou et bosquets sacrés préservés.',
         location: 'Lokossa',
-        image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://i.dailymail.co.uk/1s/2023/11/02/12/77133335-0-image-a-148_1698929344073.jpg',
       },
       {
         id: 'mon-5',
@@ -479,7 +479,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Artisanat',
         description: 'Tradition millénaire du façonnage de l\'argile rouge à la main par des coopératives de femmes créatrices.',
         location: 'Sè (Houéyogbé)',
-        image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=70',
+        image: 'https://www.tamera.fr/sites/default/files/styles/528x362/public/imported/2021/TAM01783-06_0.jpg?itok=h5tU_yLB',
       },
     ],
   },
@@ -497,7 +497,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Capitale artisanale des percussionnistes et gardiens de la nuit Zangbéto (toupies magiques de paille).',
         location: 'Adjarra',
-        image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=70',
+        image: 'https://i.pinimg.com/originals/bd/5b/76/bd5b7683d31bc8e728d1cc56c99abc8b.jpg?nii=t',
       },
       {
         id: 'oue-2',
@@ -505,7 +505,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Projet mondialement reconnu d\'agriculture biologique intégrée, de biogaz et de transformation locale.',
         location: 'Porto-Novo',
-        image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=600&q=70',
+        image: 'https://static.wixstatic.com/media/7a1f85_8af1be3c4c134d66aae738b997e7ed21~mv2.jpg/v1/fill/w_980,h_551,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/7a1f85_8af1be3c4c134d66aae738b997e7ed21~mv2.jpg',
       },
       {
         id: 'oue-3',
@@ -513,7 +513,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'Chef-d\'œuvre architectural unique rappelant les églises baroques de Bahia au Brésil.',
         location: 'Porto-Novo',
-        image: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=600&q=70',
+        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/27/41/e1/zaniedbane-elewacje-wielkiego.jpg?w=1200&h=1200&s=1',
       },
       {
         id: 'oue-4',
@@ -521,7 +521,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Havre de paix végétal centenaire peuplé de chauves-souris géantes et d\'essences rares.',
         location: 'Porto-Novo Centre',
-        image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/78/d5/66/l-entree.jpg?w=1200&h=-1&s=1',
       },
       {
         id: 'oue-5',
@@ -529,7 +529,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Collection retraçant le retour des Agoudas (descendants d\'esclaves affranchis au Brésil) au Bénin.',
         location: 'Porto-Novo',
-        image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70',
+        image: 'https://expresstourisme.com/image/hotel/musee-da-silva-a-porto-1-61aa5073a955e.jpg',
       },
       {
         id: 'oue-6',
@@ -537,7 +537,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Ancien palais royal préservé avec ses cours intérieures, objets de pouvoir et attributs royaux.',
         location: 'Porto-Novo (Avakpa)',
-        image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=600&q=70',
+        image: 'https://momaa.org/wp-content/uploads/2019/09/Fabios-LifeTour-Benin-2013-May-Porto-Novo-Royal-Palace-Musee-Honme-1530-cover-2.png',
       },
     ],
   },
@@ -555,7 +555,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Patrimoine culturel immatériel dédié à l\'hommage aux mères primordiales et aux esprits féminins.',
         location: 'Ifangni',
-        image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=70',
+        image: 'https://i.pinimg.com/originals/ff/a1/68/ffa168bd12cd6b63c6fe2b82c7829cf8.jpg',
       },
       {
         id: 'pla-2',
@@ -563,7 +563,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Porte monumentale sacrée à double battant historique protégeant l\'ancien royaume Yoruba de Kétou.',
         location: 'Kétou',
-        image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=600&q=70',
+        image: 'https://visitbeninrepublic.com/wp-content/uploads/2025/03/Ketou-Royal-Palace-Tour.png',
       },
       {
         id: 'pla-3',
@@ -571,7 +571,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Centre de recherche agricole et vaste palmeraie berceau de l\'huile rouge traditionnelle.',
         location: 'Pobè',
-        image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=70',
+        image: 'https://contenus.latribune.ca/b-nin-de-lhuile-de-palme-des-r-ves-et-des-dilemmes/assets/9vtS0QDefj/th6hy5762jhona2qhpciinkn5i-4096x2730.jpg',
       },
       {
         id: 'pla-4',
@@ -579,7 +579,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'Cœur politique du Plateau, réputé pour ses sculptures sur bois et ses perles royales.',
         location: 'Sakété',
-        image: 'https://images.unsplash.com/photo-1606744888344-493238951221?auto=format&fit=crop&w=600&q=70',
+        image: 'https://media02.stockfood.com/largepreviews/MjE3NjAyODcyNQ==/70194475-Royal-Palace-Benin.jpg',
       },
     ],
   },
@@ -597,7 +597,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Patrimoine',
         description: 'Ensemble palatial des 12 rois du Danxomé avec bas-reliefs en terre battue, trônes et armes royales.',
         location: 'Abomey',
-        image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=600&q=70',
+        image: 'https://thumbs.dreamstime.com/b/generated-image-369009162.jpg',
       },
       {
         id: 'zou-2',
@@ -605,7 +605,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Histoire',
         description: 'Galeries souterraines troglodytes taillées au XVIe siècle pour cacher les guerriers et villageois pendant les guerres.',
         location: 'Bohicon',
-        image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=70',
+        image: 'https://expresstourisme.com/image/news/Tourisme-Afrique-Benin-village-souterrain-parc-archeologique-64b7e7d449a5b.webp',
       },
       {
         id: 'zou-3',
@@ -613,7 +613,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Artisanat',
         description: 'Maîtres tisserands confectionnant les bannières royales en tissu découpé et cousu main.',
         location: 'Abomey Hountondji',
-        image: 'https://images.unsplash.com/photo-1606744888344-493238951221?auto=format&fit=crop&w=600&q=70',
+        image: 'https://i.pinimg.com/originals/bf/6a/c7/bf6ac7c4f9bd8c563971bf311d3fbc2f.jpg',
       },
       {
         id: 'zou-4',
@@ -621,7 +621,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Paysage bucolique de vallées d\'eau et de végétation luxuriante.',
         location: 'Covè',
-        image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=600&q=70',
+        image: 'https://static.vecteezy.com/system/resources/previews/066/794/175/large_2x/waterfall-flowing-through-bamboo-forest-landscape-with-rocks-and-light-photo.jpeg',
       },
       {
         id: 'zou-5',
@@ -629,7 +629,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Artisanat',
         description: 'Forges traditionnelles où sont martelés les récades (scetres royaux) et armes d\'apparat.',
         location: 'Abomey',
-        image: 'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=600&q=70',
+        image: 'https://i.pinimg.com/736x/f5/39/50/f5395091af3742178e4ce6088dc264b1.jpg',
       },
     ],
   },
