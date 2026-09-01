@@ -263,7 +263,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Vaudou & Culture',
         description: 'Royaume Mahi célèbre pour sa fête annuelle de l\'Igname et ses prêtres vaudou respectés.',
         location: 'Savalou',
-        image: https://c8.alamy.com/comp/F2N3HB/benin-west-africa-savalou-royal-palace-sponsored-by-muammar-gaddafi-F2N3HB.jpg',
+        image: 'https://c8.alamy.com/comp/F2N3HB/benin-west-africa-savalou-royal-palace-sponsored-by-muammar-gaddafi-F2N3HB.jpg',
       },
       {
         id: 'col-5',
