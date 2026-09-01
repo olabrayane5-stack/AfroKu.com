@@ -7,7 +7,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Kandi',
     region: 'Nord',
     description: 'Le plus grand département du Bénin, terre de savanes, du Fleuve Niger, de réserves cynegétiques et du Parc National W.',
-    image: 'https://thumbs.dreamstime.com/b/alibori-red-highlighted-map-benin-189062561.jpg',
+    image: 'https://gifex.com/fr/wp-content/uploads/2342/Carte-du-departement-de-l-Alibori.jpg',
     sites: [
       {
         id: 'ali-1',
@@ -65,7 +65,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Natitingou',
     region: 'Nord',
     description: 'Région montagneuse spectaculaire, berceau du Parc de la Pendjari et des célèbres châteaux-forts Tatas Somba.',
-    image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2344/Carte-des-communes-de-l-Atacora-768x585.png',
     sites: [
       {
         id: 'ata-1',
@@ -123,7 +123,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Allada',
     region: 'Sud',
     description: 'Cœur historique de la mémoire spirituelle et maritime : Ouidah, la cité lacustre de Ganvié et Allada.',
-    image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2346/Carte-des-communes-du-departement-de-l-Atlantique-Benin-768x583.png',
     sites: [
       {
         id: 'atl-1',
@@ -181,7 +181,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Parakou',
     region: 'Nord',
     description: 'Terre des cavaliers Wassangari, des royaumes Bariba, de l\'artisanat du cuir et de la célébration de la Gaani.',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2348/Carte-du-departement-du-Borgou.jpg',
     sites: [
       {
         id: 'bor-1',
@@ -231,7 +231,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Dassa-Zoumè',
     region: 'Centre',
     description: 'Paysage magique de mamelons granitiques, de sanctuaires mariaux, de forêts sacrées et du royaume d\'Idatcha.',
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=70',
+    image: 'https://www.ilovemaps.co.uk/cdn/shop/files/BeninMap3ILM_300x213_crop_center.jpg?v=1693830500',
     sites: [
       {
         id: 'col-1',
@@ -281,7 +281,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Dogbo',
     region: 'Sud',
     description: 'Département de vallées verdoyantes, marchés traditionnels d\'artisanat, pots en terre et sources d\'eaux naturelles.',
-    image: 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2354/Carte-des-communes-du-Couffo-768x584.png',
     sites: [
       {
         id: 'cou-1',
@@ -331,7 +331,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Djougou',
     region: 'Nord',
     description: 'Département carrefour des monts Tanéka, des sages guérisseurs Tanéka Baka et des forêts sacrées préservées.',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2352/Carte-du-departement-de-la-Donga-755x1024.jpg',
     sites: [
       {
         id: 'don-1',
@@ -381,7 +381,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Cotonou',
     region: 'Sud',
     description: 'Cœur économique et urbain du Bénin : plages Atlantique, art contemporain, marché Dantokpa et monuments érigés.',
-    image: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=500&q=70',
+    image: 'https://de-academic.com/pictures/dewiki/66/Benin-karte-politisch-littoral.png',
     sites: [
       {
         id: 'lit-1',
@@ -439,7 +439,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Lokossa',
     region: 'Sud',
     description: 'Merveille côtière : embouchure de la Bouche du Roy, plages de Grand-Popo, lac Ahémé et poteries de Sè.',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2358/Carte-des-communes-du-departement-du-Mono.png',
     sites: [
       {
         id: 'mon-1',
@@ -489,7 +489,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Porto-Novo',
     region: 'Sud',
     description: 'Capitale politique du Bénin : architecture afro-brésilienne, musées royaux, masques Zangbéto et berges de l\'Ouémé.',
-    image: 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2360/Carte-des-communes-de-l-Oueme-768x585.png',
     sites: [
       {
         id: 'oue-1',
@@ -547,7 +547,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Sakété',
     region: 'Sud',
     description: 'Terre des royaumes Yoruba-Nago, des forêts de palmiers à huile, du masque sacré Gelede et du site Akaba Idenena.',
-    image: 'https://images.unsplash.com/photo-1606744888344-493238951221?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2362/Carte-du-departement-du-Plateau-Benin.jpg',
     sites: [
       {
         id: 'pla-1',
@@ -589,7 +589,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
     chefLieu: 'Abomey',
     region: 'Centre',
     description: 'Berceau du puissant Royaume du Dahomey, des Palais Royaux d\'Abomey (UNESCO), du village souterrain et des forged royales.',
-    image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=500&q=70',
+    image: 'https://gifex.com/fr/wp-content/uploads/2364/Carte-des-communes-du-departement-du-Zou-Benin-768x585.png',
     sites: [
       {
         id: 'zou-1',
