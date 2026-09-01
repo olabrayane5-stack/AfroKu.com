@@ -15,7 +15,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Zone de chasse et d\'observation de la faune sauvage du nord du Bénin.',
         location: 'Kandi',
-        image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=70',
+        image: 'https://consulatbenin.fr/wp-content/uploads/2026/03/safari-au-benin-elephants-et-vehicule.jpg',
       },
       {
         id: 'ali-2',
@@ -23,7 +23,7 @@ export const BENIN_DEPARTMENTS: BeninDepartment[] = [
         category: 'Nature',
         description: 'Bassin cotonnier offrant des formations rocheuses magnifiques et des cours d\'eau pittoresques.',
         location: 'Banikoara',
-        image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=600&q=70',
+        image: 'https://i.pinimg.com/originals/89/12/da/8912dae0dd1d846553a763d561c4f2d7.jpg',
       },
       {
         id: 'ali-3',
