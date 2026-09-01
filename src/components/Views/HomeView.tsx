@@ -898,7 +898,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <div className="p-4 pt-0 space-y-3">
                   <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between">
                     <div>
-                      <span className="text-[11px] text-slate-400 block">À partir de</span>
+                      <span className="text-[11px] text-slate-400 block"></span>
                       <span className="text-base font-extrabold text-slate-900">{item.price}</span>
                     </div>
                   </div>
@@ -908,7 +908,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     className="w-full py-2.5 bg-[#003580] hover:bg-[#00255c] text-white text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <Ticket className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Réserver un ticket</span>
+                    <span>Plus d'infos</span>
                   </button>
                 </div>
               </div>
