@@ -652,13 +652,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 Vivez le Bénin autrement à travers ses célébrations uniques et ses rendez-vous culturels majeurs.
               </p>
             </div>
-            <button
-              onClick={() => setActiveTab('explorer')}
-              className="text-sm font-bold text-[#006ce4] hover:text-[#0057b8] flex items-center gap-1 cursor-pointer shrink-0"
-            >
-              <span>Page Tous les événements</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+           
           </div>
 
           {/* Grid of Events Cards: 3 columns (3 on top row, 3 on bottom row = 6 initially) */}
