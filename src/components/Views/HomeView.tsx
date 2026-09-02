@@ -673,7 +673,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 organizer: 'Ministère du Tourisme',
                 desc: 'Célébration culturelle et spirituelle du Vodoun au Bénin.',
                 price: 'Gratuit',
-                image: vodunDaysImg
+                image: 'https://levenementprecis.bj/wp-content/uploads/2026/01/Vodun-Days-net-1.jpg'
               },
               {
                 title: 'Festival des Masques',
@@ -684,7 +684,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 organizer: 'Ministère de la Culture',
                 desc: 'Danses traditionnelles et masques sacrés.',
                 price: 'Gratuit',
-                image: festivalMasquesImg
+                image: 'https://www.gouv.bj/upload/images/banners/320780519735001754238600.jpg'
               },
               {
                 title: 'Fête de la Gaani',
@@ -695,80 +695,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 organizer: 'Cour Royale de Nikki',
                 desc: 'Parades équestres et grande fête princière du Royaume de Nikki.',
                 price: 'Gratuit',
-                image: feteGaaniImg
+                image: 'https://beninespoir.com/wp-content/uploads/2019/10/Gaani.jpeg'
               },
-              {
-                title: 'Festival International Vodou',
-                badge: 'MUSIQUE & ART',
-                date: '9 - 11 Janvier 2026',
-                location: 'Ouidah',
-                desc: 'Tambours sacrés, rythmes ancestraux et spiritualité au cœur du Vodou.',
-                price: 'Gratuit',
-                image: festivalVodouMusicImg
-              },
-              {
-                title: "Salon International de l'Artisanat",
-                badge: 'ART & ARTISANAT',
-                date: 'Juillet 2026',
-                location: 'Cotonou',
-                desc: 'Exposition-vente d\'artisanat d\'art, poteries et créations locales.',
-                price: 'Gratuit',
-                image: siabCraftImg
-              },
-              {
-                title: 'Festival Guèlèdè (UNESCO)',
-                badge: 'PATRIMOINE UNESCO',
-                date: '15 - 18 Février 2026',
-                location: 'Kétou & Sakété',
-                desc: 'Hommage aux mères et esprits sacrés par le masque Guèlèdè.',
-                price: 'Gratuit',
-                image: gueledeMaskImg
-              },
-              {
-                title: 'WeLoveya Festival',
-                badge: 'MUSIQUE URBAINE',
-                date: 'Août 2026',
-                location: 'Cotonou',
-                desc: 'Grand concert des musiques actuelles, afrobeat et hip-hop.',
-                price: 'Gratuit',
-                image: weloveyaConcertImg
-              },
-              {
-                title: 'Festival de Théâtre (FITHEB)',
-                badge: 'THÉÂTRE',
-                date: 'Mars 2026',
-                location: 'Cotonou & Parakou',
-                desc: 'Rencontre majeure des arts scéniques et dramaturges d\'Afrique.',
-                price: 'Gratuit',
-                image: fithebTheaterImg
-              },
-              {
-                title: 'Festival des Arts Vodun',
-                badge: 'ART CONTEMPORAIN',
-                date: 'Janvier 2026',
-                location: 'Ouidah',
-                desc: 'Expositions d\'art contemporain, sculpteurs et mémoire Vodun.',
-                price: 'Gratuit',
-                image: artsVodunImg
-              },
-              {
-                title: 'Nonvitcha (Grand-Popo)',
-                badge: 'TRADITION',
-                date: 'Pentecôte 2026',
-                location: 'Grand-Popo',
-                desc: 'Plus ancienne fête fraternelle des peuples Xwla et Pedah au bord de mer.',
-                price: 'Gratuit',
-                image: nonvitchaImg
-              },
-              {
-                title: 'Célébrations Royales d\'Abomey',
-                badge: 'HISTOIRE ROYALE',
-                date: 'Avril 2026',
-                location: 'Abomey',
-                desc: 'Hommage aux dynasties et Palais Royaux du Royaume du Danxomé.',
-                price: 'Gratuit',
-                image: abomeyRoyalImg
-              },
+            
               {
                 title: 'Nov\'Art (Art contemporain)',
                 badge: 'EXPOSITION',
@@ -776,7 +705,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 location: 'Cotonou',
                 desc: 'Biennale de création visuelle, peintures et photographies.',
                 price: 'Gratuit',
-                image: novArtImg
+                image: 'https://destination-rivesduloirenanjou.fr/wp-content/uploads/2024/06/novart2.jpg'
               },
               {
                 title: 'Carnaval Kaléta & Arts Agoudas',
@@ -785,7 +714,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 location: 'Cotonou & Ouidah',
                 desc: 'Parades costumées, défilés masqués et héritage afro-brésilien.',
                 price: 'Gratuit',
-                image: kaletaCarnivalImg
+                image: 'https://i0.wp.com/www.littleresthill.com/wp-content/uploads/2021/03/Kaleta.jpg?ssl=1'
               },
               {
                 title: 'Festival EYA',
@@ -794,26 +723,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 location: 'Cotonou',
                 desc: 'Grande scène festive célébrant la musique live et les talents béninois.',
                 price: 'Gratuit',
-                image: eyaConcertImg
+                image: 'https://d2aqzcyvhibcdz.cloudfront.net/wle-cdn/cdn/landing/images/bg/hero-imgdf6.jpg'
               },
-              {
-                title: 'Festival de Cinéma de Ouidah',
-                badge: 'CINÉMA',
-                date: 'Février 2026',
-                location: 'Ouidah',
-                desc: 'Projections de films, documentaires et fictions panafricaines.',
-                price: 'Gratuit',
-                image: ouidahFilmImg
-              },
-              {
-                title: 'Festival des Cultures Endogènes',
-                badge: 'PATRIMOINE',
-                date: 'Mai 2026',
-                location: 'Allada',
-                desc: 'Valorisation des rites sacrés, pharmacopée et savoirs ancestraux.',
-                price: 'Gratuit',
-                image: endogenousCulturesImg
-              },
+              
               {
                 title: 'Journées de l\'Artisanat',
                 badge: 'ARTISANAT',
@@ -821,35 +733,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 location: 'Parakou',
                 desc: 'Promotion du textile tissé Kanvo, vannerie et sculpture sur bois.',
                 price: 'Gratuit',
-                image: craftsKanvoImg
+                image: 'https://les4mondes.fr/wp-content/uploads/2025/11/214235.jpg'
               },
-              {
-                title: 'Festival Lacustre de Ganvié',
-                badge: 'LACUSTRE',
-                date: 'Août 2026',
-                location: 'Ganvié (Lac Nokoué)',
-                desc: 'Courses de pirogues traditionnelles et festivités sur la cité lacustre.',
-                price: 'Gratuit',
-                image: festivalGanvieImg
-              },
-              {
-                title: 'Festival Écotouristique Pendjari',
-                badge: 'NATURE',
-                date: 'Mai 2026',
-                location: 'Parc de la Pendjari',
-                desc: 'Safari guidé, sensibilisation à la faune sauvage et tourisme vert.',
-                price: 'Gratuit',
-                image: pendjariSafariImg
-              },
-              {
-                title: 'Journées du Patrimoine Culturel',
-                badge: 'CULTURE & HISTOIRE',
-                date: 'Septembre 2026',
-                location: 'Porto-Novo',
-                desc: 'Visites guidées des musées, bâtisses afro-brésiliennes et conférences.',
-                price: 'Gratuit',
-                image: heritageMuseumImg
-              },
+              
             ].slice(0, showAllEvents ? 20 : 6).map((item, idx) => (
               <div
                 key={idx}
