@@ -845,57 +845,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
       }
     ]
   },
-  {
-    id: 'prod-9',
-    name: 'Pendentif Amulette Fa en Argent 925 & Agate de Dassa',
-    category: 'Bijoux',
-    priceXOF: 42000,
-    availability: 'En stock',
-    artisanId: 'art-7',
-    artisanName: 'Sessou & Bijoutiers de Dassa',
-    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=500&q=70',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=500&q=70'
-    ],
-    historyInspiration: 'Gravé du signe bénéfique de la géomancie du Fa. Taillé dans une pierre d\'Agate naturelle extraite des colines sacrées de Dassa-Zoumè.',
-    culturalSignificance: 'Symbole de clarté d\'esprit, d\'intuition et d\'équilibre intérieur.',
-    manufacturingTechnique: 'Taillage et polissage à la main de la pierre fine, sertissage en argent massif ciselé au poinçon artisanal.',
-    specialFeatures: 'Livré avec un cordon en cuir tressé et une attestation minéralogique.',
-    materials: ['Argent 925 pur', 'Agate naturelle de Dassa', 'Cordon en cuir'],
-    dimensions: 'Médaille 3.2 cm x 2.1 cm',
-    weight: '45 g',
-    colors: ['Argent massif', 'Brun ambré', 'Gris nacre'],
-    isHandmade: true,
-    editionType: 'Pièce unique',
-    is100PercentHandmade: true,
-    madeInBenin: true,
-    hasCertificateOfAuthenticity: true,
-    qualityMaterials: 'Argent massif certifié anti-allergique.',
-    qualityCheckDone: true,
-    nationalDelivery: 'Livraison express 24h au Bénin.',
-    internationalDelivery: 'Expédition sous pli sécurisé valeur déclarée.',
-    estimatedDeliveryTime: '3 à 5 jours ouvrés',
-    deliveryFee: 'Offerte au Bénin',
-    pickupAvailable: true,
-    pickupLocation: 'Atelier de Dassa / Cotonou',
-    securePayment: 'MTN / Moov Mobile Money & Carte',
-    purchaseProtection: 'Garantie satisfait ou remboursé 14 jours.',
-    returnPolicy: '14 jours',
-    securePackaging: 'Écrin artisanal en bois de palmier',
-    customerSupport: 'Support AfroKu 7j/7',
-    artisanExperienceYears: 16,
-    artisanCity: 'Dassa-Zoumè',
-    artisanCreationCount: 290,
-    artisanBio: 'Mître joaillier passionné par la gemmologie du centre du Bénin.',
-    artisanRating: 4.9,
-    artisanReviewCount: 18,
-    reviews: [
-     
+  
     ]
-  },
-  
-    
-  
+  },      
 ];
 
 export const BENIN_ARTISAN_SHOPS: ArtisanShopItem[] = [
