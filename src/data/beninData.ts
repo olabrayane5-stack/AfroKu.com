@@ -413,10 +413,10 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     availability: 'En stock',
     artisanId: 'art-2',
     artisanName: 'Ahouéfa & Dames du Bronze',
-    image: beninBronzeImg,
+    image: 'https://i.servimg.com/u/f38/19/99/19/20/12320713.jpg',
     galleryImages: [
       beninBronzeImg,
-      'https://images.unsplash.com/photo-1606744888344-493238951221?auto=format&fit=crop&w=500&q=70'
+      'https://i.servimg.com/u/f38/19/99/19/20/12320713.jpg'
     ],
     historyInspiration: 'Hommage à Seh-Dong-Hong-Be, la légendaire générale du corps des Amazones (Agojie) du Danxomé au XIXe siècle. Symbole de bravoure, de fierté féminine et d\'indépendance.',
     culturalSignificance: 'Les Amazones protégeaient le Roi et les frontières du Royaume. Cette statue en bronze est traditionnellement exposée dans les demeures pour invoquer la force et la protection de la famille.',
@@ -475,9 +475,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     availability: 'En stock',
     artisanId: 'art-1',
     artisanName: 'Maître Akplogan',
-    image: 'https://images.unsplash.com/photo-1606744888344-493238951221?auto=format&fit=crop&w=500&q=70',
+    image: 'https://portailculturel.gouv.bj/portail/resize/2022/4AMY8VSkzGw6BJDFvbIt_172912107087.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1606744888344-493238951221?auto=format&fit=crop&w=500&q=70'
+      'https://portailculturel.gouv.bj/portail/resize/2022/4AMY8VSkzGw6BJDFvbIt_172912107087.jpg'
     ],
     historyInspiration: 'Représentation du célèbre symbole de la Jarre Trouée du Roi Guézo : "Si tous les enfants du pays venaient boucher de leurs doigts les trous de la jarre, le pays serait sauvé".',
     culturalSignificance: 'Les bas-reliefs en tissu appliqué d\'Abomey servaient de registres historiques et de tentures murales dans les palais royaux pour célébrer les grandes devises des souverains.',
@@ -529,9 +529,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     availability: 'En stock',
     artisanId: 'art-3',
     artisanName: 'Kpakpo & Sculpteurs de Kétou',
-    image: beninGeledeImg,
+    image: 'https://www.aly-abbara.com/museum/Afrique/Nigeria/Yoruba/Images/GiIF-MP4/Masque-Yoruba-Gelede-moto.gif',
     galleryImages: [
-      beninGeledeImg
+      'https://www.aly-abbara.com/museum/Afrique/Nigeria/Yoruba/Images/GiIF-MP4/Masque-Yoruba-Gelede-moto.gif'
     ],
     historyInspiration: 'Masque rituel de la société secrète Gelede (inscrit au patrimoine culturel immatériel de l\'UNESCO), célébrant le pouvoir des mères ancestrales et la fertilité.',
     culturalSignificance: 'Invoqué lors des cérémonies pour apporter la paix, la prospérité et honorer la sagesse des femmes aînées.',
@@ -583,9 +583,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     availability: 'En stock',
     artisanId: 'art-3',
     artisanName: 'Femmes Potières de Sè',
-    image: beninSePotteryImg,
+    image: 'https://chronexium.ma/storage/articles/covers/A5W1saWcPJJO22h7fw61alctuBNDkQNETfWjy8TO.jpg',
     galleryImages: [
-      beninSePotteryImg
+      'https://chronexium.ma/storage/articles/covers/A5W1saWcPJJO22h7fw61alctuBNDkQNETfWjy8TO.jpg'
     ],
     historyInspiration: 'Façonnée par la coopérative des potières du village de Sè dans le Mono, reconnue mondialement pour la qualité de son argile latéritique rouge.',
     culturalSignificance: 'Conserve naturellement l\'eau au frais sans électricité et sert d\'urne pour les boissons d\'accueil traditionnelles.',
@@ -637,9 +637,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     availability: 'En stock',
     artisanId: 'art-1',
     artisanName: 'Atelier Kanvo d\'Abomey',
-    image: beninKanvoImg,
+    image: 'https://s.rfi.fr/media/display/5d0339ae-6fc0-11ef-871c-005056a90284/w:1024/p:16x9/Dahomey%20pagne.jpg',
     galleryImages: [
-      beninKanvoImg
+      'https://s.rfi.fr/media/display/5d0339ae-6fc0-11ef-871c-005056a90284/w:1024/p:16x9/Dahomey%20pagne.jpg'
     ],
     historyInspiration: 'Le Kanvo (ou tissé d\'Abomey) est l\'étoffe noble portée lors des cérémonies officielles et des fêtes royales du Bénin.',
     culturalSignificance: 'Chaque motif tissé raconte un proverbe ou une bénédiction de prospérité.',
@@ -691,9 +691,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     availability: 'En stock',
     artisanId: 'art-2',
     artisanName: 'Ahouéfa & Dames du Bronze',
-    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=500&q=70',
+    image: 'https://www.ninanina.fr/wp-content/uploads/2019/12/n2297b-bracelet-manchette-bronze-evase-pour-femme-bijoux-bracelets-femmes-en-ligne-ninanina.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=500&q=70'
+      'https://www.ninanina.fr/wp-content/uploads/2019/12/n2297b-bracelet-manchette-bronze-evase-pour-femme-bijoux-bracelets-femmes-en-ligne-ninanina.jpg'
     ],
     historyInspiration: 'Inspiré des parures portées par les reines et princesses du royaume d\'Ouidah et d\'Abomey.',
     culturalSignificance: 'Les perles de terre et de verre rouge symbolisent la fertilité et l\'élévation sociale.',
@@ -745,9 +745,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     availability: 'Sur commande',
     artisanId: 'art-1',
     artisanName: 'Galerie d\'Art Vaudou Porto-Novo',
-    image: 'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=500&q=70',
+    image: 'https://afro-moderne.mondoblog.org/files/2017/06/Les-16-signes-m%C3%A8res-du-F%C3%A2-1-e1497963047879.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=500&q=70'
+      'https://afro-moderne.mondoblog.org/files/2017/06/Les-16-signes-m%C3%A8res-du-F%C3%A2-1-e1497963047879.jpg'
     ],
     historyInspiration: 'Œuvre picturale inspirée de la géomancie sacrée du Fa et de Legba, le gardien des carrefours.',
     culturalSignificance: 'Apporte l\'harmonie, la clairvoyance et protège le foyer contre les énergies négatives.',
@@ -799,9 +799,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     availability: 'En stock',
     artisanId: 'art-2',
     artisanName: 'Maroquinerie Artisanale de Djougou',
-    image: beninLeatherImg,
+    image: 'https://lacasaducuir.com/cdn/shop/files/sac-voyage-homme-cuir-noir-marron-cuir-homme-51379426427217.jpg?v=1693589411',
     galleryImages: [
-      beninLeatherImg
+      'https://lacasaducuir.com/cdn/shop/files/sac-voyage-homme-cuir-noir-marron-cuir-homme-51379426427217.jpg?v=1693589411'
     ],
     historyInspiration: 'Inspiré des sacs des caravaniers du Nord Bénin, revisité pour le voyageur moderne.',
     culturalSignificance: 'Alliance parfaite du cuir tanné de Djougou et du tissu traditionnel Kanvo.',
