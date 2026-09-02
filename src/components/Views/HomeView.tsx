@@ -543,7 +543,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="lg:col-span-5 grid grid-cols-2 gap-3">
               {BENIN_ARTISANS.slice(0, 2).map((art) => (
                 <div key={art.id} className="bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-xl text-white">
-                  <img src={art.photo} alt={art.name} className="w-full h-24 object-cover rounded-lg mb-2" referrerPolicy="no-referrer" onError={handleImageError} />
+                  <img src={art.id === 'art-1' ? 'https://artisansdumonde.org/images/actu-locales/m_tisserand%20-%20copie.jpg' : 'https://www.afrikatiss.org/wp-content/uploads/2020/02/DSC_3618-min.jpg'} alt={art.name} className="w-full h-24 object-cover rounded-lg mb-2" referrerPolicy="no-referrer" onError={handleImageError} />
                   <h4 className="font-bold text-xs truncate">{art.name}</h4>
                   <p className="text-[10px] text-amber-200 truncate">{art.craft}</p>
                 </div>
