@@ -61,7 +61,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   }
 
   // Show 6 preview guides on HomeView
-  const displayedGuides = BENIN_GUIDES.slice(0, 6);
+  const displayedGuides = BENIN_GUIDES.slice(0, 3);
   const [showAllEvents, setShowAllEvents] = useState(false);
   const [selectedEventForBooking, setSelectedEventForBooking] = useState<CulturalEvent | null>(null);
   const [selectedProductForModal, setSelectedProductForModal] = useState<ArtisanProductItem | null>(null);
