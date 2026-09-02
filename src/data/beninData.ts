@@ -893,58 +893,7 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
      
     ]
   },
-  {
-    id: 'prod-20',
-    name: 'Portefeuille Compagnon en Cuir Pleine Fleur de Djougou',
-    category: 'Accessoires',
-    priceXOF: 24000,
-    availability: 'En stock',
-    artisanId: 'art-6',
-    artisanName: 'Maman Yabo & Tanneurs de Djougou',
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=70',
-    galleryImages: [
-      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=70'
-    ],
-    historyInspiration: 'Marque de fabrique des maroquiniers du Donga, réputés pour la solidité légendaire de leurs pièces en cuir.',
-    culturalSignificance: 'Accompagne le voyageur au quotidien.',
-    manufacturingTechnique: 'Découpe manuelle, couture renforcée au fil de lin poissé et teinté naturel.',
-    specialFeatures: 'Comporte 8 emplacements cartes, poche billets et compartiment monnaie à fermoir ébène.',
-    materials: ['Cuir pleine fleur tanné végétal', 'Fil de lin poissé'],
-    dimensions: '19 cm x 10 cm x 2 cm',
-    weight: '210 g',
-    colors: ['Brun Havane', 'Noir Ébène'],
-    isHandmade: true,
-    editionType: 'Édition artisanale',
-    is100PercentHandmade: true,
-    madeInBenin: true,
-    hasCertificateOfAuthenticity: true,
-    qualityMaterials: 'Cuir véritable increvable.',
-    qualityCheckDone: true,
-    nationalDelivery: 'Livraison 24h',
-    internationalDelivery: 'Expédition sous pli sécurisé',
-    estimatedDeliveryTime: '3 à 5 jours ouvrés',
-    deliveryFee: 'Standard',
-    pickupAvailable: true,
-    pickupLocation: 'Cotonou / Djougou',
-    securePayment: 'Momo & Carte',
-    purchaseProtection: 'Garantie satisfait ou remboursé',
-    returnPolicy: '14 jours',
-    securePackaging: 'Pochette en tissu',
-    customerSupport: 'Support AfroKu',
-    artisanExperienceYears: 24,
-    artisanCity: 'Djougou',
-    artisanCreationCount: 710,
-    artisanBio: 'Maroquiniers du Donga.',
-    artisanRating: 4.9,
-    artisanReviewCount: 27,
-    reviews: [
-      {
-        id: 'rev-21',
-        userName: 'Marc A. (Abidjan)',
-        rating: 5,
-        date: '28 Juillet 2026',
-        comment: 'Le cuir est souple et magnifique, très agréable au toucher.'
-      }
+  
     ]
   }
 ];
