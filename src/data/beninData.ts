@@ -894,8 +894,8 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
     ]
   },
   
-    ]
-  }
+    
+  
 ];
 
 export const BENIN_ARTISAN_SHOPS: ArtisanShopItem[] = [
