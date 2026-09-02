@@ -194,17 +194,7 @@ export const ArtisansView: React.FC = () => {
             <Store className="w-4 h-4" />
             <span>Boutiques Physiques ({BENIN_ARTISAN_SHOPS.length})</span>
           </button>
-          <button
-            onClick={() => setActiveTab('workshops')}
-            className={`px-4 py-3 rounded-2xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              activeTab === 'workshops'
-                ? 'bg-amber-400 text-slate-950 shadow-lg scale-105'
-                : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
-            }`}
-          >
-            <Calendar className="w-4 h-4" />
-            <span>Ateliers Pratiques ({BENIN_ARTISANS.length})</span>
-          </button>
+          
         </div>
       </div>
 
