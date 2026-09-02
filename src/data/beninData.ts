@@ -844,9 +844,9 @@ export const BENIN_ARTISAN_PRODUCTS: ArtisanProductItem[] = [
         comment: 'Superbe sac de voyage ! Très solide, pratique et tellement élégant.'
       }
     ]
-  },
   
-    ]      
+  
+  }     
 ];
 
 export const BENIN_ARTISAN_SHOPS: ArtisanShopItem[] = [
