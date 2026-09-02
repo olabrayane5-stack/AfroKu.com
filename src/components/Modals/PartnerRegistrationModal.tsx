@@ -361,10 +361,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
             </button>
 
             <div className="flex items-center gap-2 mb-3">
-              <span className="px-3 py-1 bg-amber-400/15 text-amber-300 rounded-full text-[11px] font-bold tracking-wider uppercase border border-amber-400/20 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                Réseau Officiel AfroKu
-              </span>
+              
             </div>
 
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-serif">
