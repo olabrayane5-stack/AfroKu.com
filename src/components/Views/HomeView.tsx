@@ -801,7 +801,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               onClick={() => setShowAllEvents(!showAllEvents)}
               className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-300 font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
             >
-              <span>{showAllEvents ? 'Réduire la liste' : 'Voir plus d\'événements (+14)'}</span>
+              <span>{showAllEvents ? 'Réduire la liste' : 'Voir plus d\'événements'}</span>
               {showAllEvents ? <ChevronUp className="w-4 h-4 text-slate-600" /> : <ChevronDown className="w-4 h-4 text-slate-600" />}
             </button>
 
