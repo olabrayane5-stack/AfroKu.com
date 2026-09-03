@@ -285,7 +285,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onClick={() => openProtectedModal('add_property')}
                   className="hover:text-white transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  Ajouter un hébergement
+                  Agenda des festivités
                 </button>
               </div>
             )}
@@ -370,7 +370,7 @@ export const Header: React.FC<HeaderProps> = ({
                   }}
                   className="w-full text-left py-2 px-2 text-white/90 hover:text-white flex items-center gap-2 font-medium"
                 >
-                  <span>Ajouter un hébergement</span>
+                  <span>Agenda des festivités</span>
                 </button>
               </div>
             )}
