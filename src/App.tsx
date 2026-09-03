@@ -164,7 +164,7 @@ function MainAppContent() {
                   <li><button onClick={() => setActiveTab('guides')} className="hover:text-amber-300">Guides Locaux Certifiés</button></li>
                   <li><button onClick={() => setActiveTab('artisans')} className="hover:text-amber-300">Ateliers de Maîtres Artisans</button></li>
                   <li><button onClick={() => setActiveTab('reservations')} className="hover:text-amber-300">Mes Réservations & Billets</button></li>
-                  <li><button onClick={() => setActiveModal('add_property')} className="hover:text-amber-300">Ajouter mon établissement</button></li>
+                  <li><button onClick={() => setActiveModal('add_property')} className="hover:text-amber-300">Agenda des festivités</button></li>
                 </ul>
               </div>
 
