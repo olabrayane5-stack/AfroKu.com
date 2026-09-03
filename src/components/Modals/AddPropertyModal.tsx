@@ -25,7 +25,7 @@ const UPCOMING_EVENTS: FestivalEvent[] = [
     badge: 'CULTURE & HISTOIRE',
     date: 'Septembre 2026',
     location: 'Porto-Novo',
-    price: '2 000 XOF',
+    price: 'Gratuit',
   },
   {
     day: 'OCT',
@@ -34,7 +34,7 @@ const UPCOMING_EVENTS: FestivalEvent[] = [
     badge: 'ARTISANAT',
     date: 'Octobre 2026',
     location: 'Parakou',
-    price: '1 500 XOF',
+    price: 'Gratuit',
   },
   {
     day: '11',
@@ -44,7 +44,7 @@ const UPCOMING_EVENTS: FestivalEvent[] = [
     date: '11 novembre 2026',
     time: '08h30',
     location: 'Dassa-Zoumè & Nikki',
-    price: '3 000 XOF',
+    price: 'Gratuit',
   },
   {
     day: 'NOV',
@@ -53,7 +53,7 @@ const UPCOMING_EVENTS: FestivalEvent[] = [
     badge: 'EXPOSITION',
     date: 'Novembre 2026',
     location: 'Cotonou',
-    price: '2 500 XOF',
+    price: 'Gratuit',
   },
   {
     day: 'DÉC',
@@ -62,7 +62,7 @@ const UPCOMING_EVENTS: FestivalEvent[] = [
     badge: 'CARNAVAL',
     date: 'Décembre 2026',
     location: 'Cotonou & Ouidah',
-    price: '2 000 XOF',
+    price: 'Gratuit',
   },
   {
     day: 'DÉC',
@@ -71,7 +71,7 @@ const UPCOMING_EVENTS: FestivalEvent[] = [
     badge: 'CONCERT LIVE',
     date: 'Décembre 2026',
     location: 'Cotonou',
-    price: '5 000 XOF',
+    price: 'Gratuit',
   },
   {
     day: '10',
@@ -81,7 +81,7 @@ const UPCOMING_EVENTS: FestivalEvent[] = [
     date: '10 janvier 2027',
     time: '09h00',
     location: 'Ouidah, Bénin',
-    price: '5 000 XOF',
+    price: 'Gratuit',
   },
   {
     day: '17',
@@ -91,7 +91,7 @@ const UPCOMING_EVENTS: FestivalEvent[] = [
     date: '17–19 janvier 2027',
     time: '14h00',
     location: 'Kouandé & Porto-Novo',
-    price: '3 000 XOF',
+    price: 'Gratuit',
   },
 ];
 
