@@ -803,6 +803,105 @@ app.post("/api/admin/applications/:id/reject", requireAuth, requireAdmin, async 
   }
 });
 
+// ----------------------------------------------------------------------
+// GET /api/guides — Liste PUBLIQUE (aucune authentification requise) des
+// guides dont le dossier a été approuvé par un administrateur. C'est cette
+// route que consomme GuidesView.tsx côté site public pour permettre à un
+// prestataire validé d'apparaître réellement parmi les profils réservables,
+// en plus des fiches de démonstration.
+// ----------------------------------------------------------------------
+app.get("/api/guides", async (req, res) => {
+  try {
+    const db = await getDb();
+
+    const verifiedGuides = await db
+      .collection("users")
+      .find({ role: "guide", accreditationStatus: "verified" })
+      .toArray();
+
+    const guides = await Promise.all(
+      verifiedGuides.map(async (u: any) => {
+        // On récupère la candidature approuvée la plus récente pour
+        // retrouver les infos saisies lors de l'inscription (tarif, bio...).
+        const application = await db
+          .collection("partnerApplications")
+          .find({ userId: u._id.toString(), type: "guide", status: "approved" })
+          .sort({ reviewedAt: -1 })
+          .limit(1)
+          .next();
+
+        const d = (application && application.details) || {};
+        return {
+          id: u._id.toString(),
+          name: d.fullName || u.name,
+          title: "Guide touristique certifié AfroKu",
+          location: [d.city, d.department].filter(Boolean).join(", ") || "Bénin",
+          yearsOfExperience: d.yearsExperience || 1,
+          languages: Array.isArray(d.languages) && d.languages.length ? d.languages : ["Français"],
+          photo: d.photoUrl || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(d.fullName || u.name)}`,
+          bio: d.bio || "",
+          pricePerDay: d.dailyRateXOF || 0,
+          specialties: Array.isArray(d.specialties) ? d.specialties : [],
+          isVerified: true,
+        };
+      })
+    );
+
+    res.status(200).json({ guides });
+  } catch (err: any) {
+    console.error("Erreur /api/guides:", err);
+    res.status(500).json({ error: "Erreur serveur lors du chargement des guides." });
+  }
+});
+
+// ----------------------------------------------------------------------
+// GET /api/artisans — Équivalent de /api/guides pour les comptes Artisan
+// validés par l'administration.
+// ----------------------------------------------------------------------
+app.get("/api/artisans", async (req, res) => {
+  try {
+    const db = await getDb();
+
+    const verifiedArtisans = await db
+      .collection("users")
+      .find({ role: "artisan", accreditationStatus: "verified" })
+      .toArray();
+
+    const artisans = await Promise.all(
+      verifiedArtisans.map(async (u: any) => {
+        const application = await db
+          .collection("partnerApplications")
+          .find({ userId: u._id.toString(), type: "artisan", status: "approved" })
+          .sort({ reviewedAt: -1 })
+          .limit(1)
+          .next();
+
+        const d = (application && application.details) || {};
+        return {
+          id: u._id.toString(),
+          name: d.artisanName || u.name,
+          craft: d.craftType || "Artisanat",
+          workshopName: d.workshopName || `Atelier de ${d.artisanName || u.name}`,
+          location: [d.city, d.department].filter(Boolean).join(", ") || "Bénin",
+          rating: 5,
+          photo: d.photoUrl || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(d.artisanName || u.name)}`,
+          description: d.bio || "",
+          hasWorkshop: true,
+          products: [],
+          department: d.department || "",
+          physicalAddress: d.physicalAddress || "",
+          workshopPriceXOF: d.workshopPriceXOF || 0,
+        };
+      })
+    );
+
+    res.status(200).json({ artisans });
+  } catch (err: any) {
+    console.error("Erreur /api/artisans:", err);
+    res.status(500).json({ error: "Erreur serveur lors du chargement des artisans." });
+  }
+});
+
 app.post("/api/ai/chat", apiRateLimiter, async (req, res) => {
   try {
     const { message, history } = req.body;
