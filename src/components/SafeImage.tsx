@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import defaultFallbackImg from '../assets/images/';
+
 
 interface SafeImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackSrc?: string;
