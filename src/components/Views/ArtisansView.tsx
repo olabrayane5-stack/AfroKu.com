@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BENIN_ARTISANS, BENIN_ARTISAN_PRODUCTS, BENIN_ARTISAN_SHOPS } from '../../data/beninData';
-import { ArtisanProductItem, ArtisanShopItem } from '../../types';
+import { ArtisanItem, ArtisanProductItem, ArtisanShopItem } from '../../types';
 import { ProductDetailModal } from '../Modals/ProductDetailModal';
 import { saveReservation } from '../../services/reservationStore';
+import { getPublishedArtisans } from '../../services/directoryService';
 import {
   Palette,
   MapPin,
@@ -29,11 +30,22 @@ import { handleImageError } from '../SafeImage';
 
 export const ArtisansView: React.FC = () => {
   const { user } = useAuth();
+  const [allArtisans, setAllArtisans] = useState<ArtisanItem[]>(BENIN_ARTISANS);
   const [activeTab, setActiveTab] = useState<'products' | 'shops' | 'workshops'>('products');
   const [selectedCategory, setSelectedCategory] = useState<string>('Tous');
   const [selectedProduct, setSelectedProduct] = useState<ArtisanProductItem | null>(null);
   const [isProductModalOpen, setIsProductModalOpen] = useState<boolean>(false);
   const [orderSuccessMessage, setOrderSuccessMessage] = useState<string | null>(null);
+
+  // Charge les artisans réellement validés par un administrateur
+  // (AfroKu-Admin) et les place en tête de liste, devant les fiches démo.
+  useEffect(() => {
+    getPublishedArtisans().then((realArtisans) => {
+      if (realArtisans.length > 0) {
+        setAllArtisans([...realArtisans, ...BENIN_ARTISANS]);
+      }
+    });
+  }, []);
 
   const [selectedArtisanObj, setSelectedArtisanObj] = useState<any | null>(null);
   const [workshopParticipants, setWorkshopParticipants] = useState<number>(1);
@@ -87,6 +99,8 @@ export const ArtisansView: React.FC = () => {
         quantity: workshopParticipants,
         paymentMethod: workshopNetwork === 'momo' ? 'MTN MoMo' : workshopNetwork === 'moov' ? 'Moov Money' : workshopNetwork === 'celtiis' ? 'Celtiis Cash' : workshopNetwork === 'card' ? 'Carte Bancaire' : workshopNetwork === 'paypal' ? 'PayPal' : 'Sur place',
         detailsNote: `Atelier pratique à ${selectedArtisanObj.workshopName} pour ${workshopParticipants} participant(s)`,
+        providerId: selectedArtisanObj.id,
+        providerName: selectedArtisanObj.name,
       });
     }, 1200);
   };
@@ -123,7 +137,7 @@ export const ArtisansView: React.FC = () => {
     return matchesDept && matchesSearch;
   });
 
-  const filteredWorkshops = BENIN_ARTISANS.filter((art) => {
+  const filteredWorkshops = allArtisans.filter((art) => {
     const matchesDept = selectedDepartment === 'Tous' || art.department === selectedDepartment;
     const searchLower = workshopSearch.toLowerCase();
     const matchesSearch = !workshopSearch ||
@@ -520,7 +534,7 @@ export const ArtisansView: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-extrabold text-base text-slate-900 font-serif">
-                  {BENIN_ARTISANS.length} Ateliers & Sessions Pratiques d'Initiation
+                  {allArtisans.length} Ateliers & Sessions Pratiques d'Initiation
                 </h3>
                 <p className="text-xs text-slate-600 mt-0.5">
                   Rencontrez nos maîtres artisans à Abomey, Cotonou, Sè, Natitingou ou Djougou. Façonnez votre propre œuvre sous leurs conseils avisés.
@@ -558,7 +572,7 @@ export const ArtisansView: React.FC = () => {
                 onChange={(e) => setSelectedDepartment(e.target.value)}
                 className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#003580] cursor-pointer"
               >
-                <option value="Tous">Tous les départements ({BENIN_ARTISANS.length})</option>
+                <option value="Tous">Tous les départements ({allArtisans.length})</option>
                 <option value="Zou">Zou (Abomey, Bohicon, Covè)</option>
                 <option value="Littoral">Littoral (Cotonou)</option>
                 <option value="Atlantique">Atlantique (Ouidah, Calavi, Allada)</option>
