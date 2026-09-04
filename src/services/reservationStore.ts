@@ -38,10 +38,32 @@ export interface ReservationItem {
   quantity?: number;
   paymentMethod?: string;
   detailsNote?: string;
+  // Lien vers le prestataire (guide ou artisan) concerné par cette réservation.
+  providerId?: string;
+  providerName?: string;
 }
 
 const STORAGE_KEY = 'afroku_user_reservations';
 export const RESERVATION_CHANGE_EVENT = 'afroku-reservations-changed';
+
+/** Commission prélevée par AfroKu sur chaque réservation reversée à un prestataire. */
+export const COMMISSION_RATE = 0.2;
+
+/** Normalise un nom (minuscules, sans accents, espaces compressés) pour comparer prestataire ↔ compte connecté. */
+export function normalizeName(name: string): string {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+}
+
+/** Calcule la part plateforme (20%) et le reversement net au prestataire pour un montant donné. */
+export function computeCommissionSplit(priceXOF: number): { commissionXOF: number; netPayoutXOF: number } {
+  const commissionXOF = Math.round(priceXOF * COMMISSION_RATE);
+  return { commissionXOF, netPayoutXOF: priceXOF - commissionXOF };
+}
 
 /**
  * Récupère les réservations enregistrées localement
@@ -94,6 +116,41 @@ export function cancelReservation(id: string): void {
     console.error('Erreur d\'annulation de la réservation:', e);
   }
   window.dispatchEvent(new CustomEvent(RESERVATION_CHANGE_EVENT));
+}
+
+/**
+ * Met à jour le statut d'une réservation (ex: un guide qui confirme ou
+ * refuse une demande reçue depuis son espace personnel)
+ */
+export function updateReservationStatus(id: string, status: string): void {
+  const current = getStoredReservations();
+  const updated = current.map((res) => (res.id === id ? { ...res, status } : res));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  } catch (e) {
+    console.error('Erreur de mise à jour du statut de la réservation:', e);
+  }
+  window.dispatchEvent(new CustomEvent(RESERVATION_CHANGE_EVENT));
+}
+
+/**
+ * Récupère les réservations liées à un prestataire (guide ou artisan) donné,
+ * dans une catégorie donnée, en comparant l'ID exact ou le nom normalisé
+ * (utile tant que les comptes réels ne sont pas encore reliés en base aux
+ * fiches Guide/Artisan de démonstration).
+ */
+export function getReservationsForProvider(
+  category: ReservationItem['category'],
+  providerId?: string,
+  providerName?: string
+): ReservationItem[] {
+  const normalizedTarget = providerName ? normalizeName(providerName) : '';
+  return getStoredReservations().filter((res) => {
+    if (res.category !== category) return false;
+    if (providerId && res.providerId === providerId) return true;
+    if (normalizedTarget && res.providerName && normalizeName(res.providerName) === normalizedTarget) return true;
+    return false;
+  });
 }
 
 /**
@@ -161,4 +218,3 @@ export function addDemoSampleReservations(): void {
   }
   window.dispatchEvent(new CustomEvent(RESERVATION_CHANGE_EVENT));
 }
-
