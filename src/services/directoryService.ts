@@ -3,7 +3,7 @@
  * administrateur (via AfroKu-Admin), publiés par le backend sur
  * GET /api/guides et GET /api/artisans. Ces profils viennent s'ajouter
  * aux fiches de démonstration (BENIN_GUIDES / données artisans statiques)
- * pour que les voyageurs puissent réellement les réserver.
+ * pour que les voyageurs puissent réellement les réserver
  */
 import { GuideItem, ArtisanItem } from '../types';
 
