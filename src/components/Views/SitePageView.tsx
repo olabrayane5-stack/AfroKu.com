@@ -461,11 +461,12 @@ export const SitePageView: React.FC<SitePageViewProps> = ({
       </div>
 
       {/* Booking Modal Overlay */}
-      <BookingModal
-        site={isBookingOpen ? site : null}
-        departmentName={department.name}
-        onClose={() => setIsBookingOpen(false)}
-      />
+     <BookingModal
+  key={site.id}
+  site={isBookingOpen ? site : null}
+  departmentName={department.name}
+  onClose={() => setIsBookingOpen(false)}
+/>
     </div>
   );
 };
