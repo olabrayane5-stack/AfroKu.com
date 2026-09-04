@@ -18,7 +18,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-// ============================================================================
+// ========================================================================
 // CORS — Autorise le site Admin (domaine séparé) à appeler cette API.
 // ============================================================================
 // Par défaut, un navigateur BLOQUE toute requête faite depuis un autre
