@@ -93,10 +93,8 @@ export const MonEspaceView: React.FC = () => {
       {/* Bandeau d'information */}
       <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-start gap-3">
         <p className="text-xs text-blue-900 leading-relaxed">
-          AfroKu prélève une commission de <strong>20 %</strong> sur chaque réservation confirmée ;
-          le solde de <strong>80 %</strong> vous revient. Les demandes ci-dessous sont reliées à votre
-          nom de profil (<strong>{user.name}</strong>) — pour les tests, réservez depuis un profil du
-          même nom sur la page Guides / Artisans.
+         AfroKu prélève une commission de <strong>20 %</strong> sur chaque réservation confirmée.
+         Vous recevez les <strong>80 %</strong> restants directement sur le moyen de paiement renseigné dans votre profil.
         </p>
       </div>
 
