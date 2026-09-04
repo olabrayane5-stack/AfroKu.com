@@ -255,7 +255,7 @@ export const PartnerRegistrationModal: React.FC<PartnerRegistrationModalProps> =
       !fullName.trim() ||
       !email.trim() ||
       !phoneWhatsApp.trim() ||
-      !finalCity.trim() ||
+      
       !idDocumentNumber.trim() 
     ) {
       setError('Veuillez remplir tous les champs obligatoires (*).');
