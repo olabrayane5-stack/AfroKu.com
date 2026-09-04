@@ -119,6 +119,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
   const [copiedCode, setCopiedCode] = useState(false);
+  useEffect(() => {
+  if (!site) {
+    setIsSubmitting(false);
+    setIsConfirmed(false);
+    setBookingRef('');
+    setCopiedCode(false);
+  }
+}, [site]);
 
   // Lock background scroll when modal is open
   useEffect(() => {
