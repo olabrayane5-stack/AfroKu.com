@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BENIN_GUIDES } from '../../data/beninData';
 import { ShieldCheck, MapPin, Languages, Check, Calendar, Award, Star, MessageSquare, Send, X, UserCheck, Lock, LogIn } from 'lucide-react';
 import { GuideItem } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { saveReservation } from '../../services/reservationStore';
+import { getPublishedGuides } from '../../services/directoryService';
 import { handleImageError } from '../SafeImage';
 
 export const GuidesView: React.FC = () => {
   const { user } = useAuth();
+  const [allGuides, setAllGuides] = useState<GuideItem[]>(BENIN_GUIDES);
   const [selectedGuide, setSelectedGuide] = useState<GuideItem | null>(null);
   const [bookingDays, setBookingDays] = useState(1);
   const [bookingDate, setBookingDate] = useState('');
@@ -17,6 +19,16 @@ export const GuidesView: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookedSuccess, setBookedSuccess] = useState(false);
   const [bookingRef, setBookingRef] = useState('');
+
+  // Charge les guides réellement validés par un administrateur (AfroKu-Admin)
+  // et les place en tête de liste, devant les fiches de démonstration.
+  useEffect(() => {
+    getPublishedGuides().then((realGuides) => {
+      if (realGuides.length > 0) {
+        setAllGuides([...realGuides, ...BENIN_GUIDES]);
+      }
+    });
+  }, []);
 
   // Review Modal State
   const [reviewingGuide, setReviewingGuide] = useState<GuideItem | null>(null);
@@ -63,6 +75,8 @@ export const GuidesView: React.FC = () => {
         customerPhone: networkInput || '+229 01 53 63 70 86',
         paymentMethod: paymentNetwork === 'momo' ? 'MTN MoMo' : paymentNetwork === 'moov' ? 'Moov Money' : paymentNetwork === 'celtiis' ? 'Celtiis Cash' : paymentNetwork === 'card' ? 'Carte Bancaire' : paymentNetwork === 'paypal' ? 'PayPal' : 'Sur place',
         detailsNote: `Accompagnement par ${selectedGuide.name} (${selectedGuide.title}) pendant ${bookingDays} jour(s)`,
+        providerId: selectedGuide.id,
+        providerName: selectedGuide.name,
       });
     }, 1200);
   };
@@ -94,7 +108,7 @@ export const GuidesView: React.FC = () => {
         </div>
         <div className="flex flex-col items-center sm:items-end gap-3 shrink-0">
           <div className="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20 text-center w-full sm:w-auto">
-            <div className="text-3xl font-extrabold text-amber-300">{BENIN_GUIDES.length} Guides</div>
+            <div className="text-3xl font-extrabold text-amber-300">{allGuides.length} Guides</div>
             <div className="text-xs text-emerald-100 mt-1">100% Natifs & Certifiés</div>
           </div>
           <button
@@ -171,7 +185,7 @@ export const GuidesView: React.FC = () => {
 
       {/* Guide Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {BENIN_GUIDES.map((guide) => (
+        {allGuides.map((guide) => (
           <div key={guide.id} className="group bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-xl hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between">
             <div>
               {/* Card Header Background Accent */}
